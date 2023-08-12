@@ -87,7 +87,7 @@ class DosenController extends Controller
                 $request->merge(['gambar' =>  $biodata->gambar]);
             } else {
                 $path = $request->file('profile')->store('/profile');
-                $request->merge(['gambar' => env('APP_URL') . '/assets/' .  $path]);
+                $request->merge(['gambar' =>  $path]);
             }
         }
 
