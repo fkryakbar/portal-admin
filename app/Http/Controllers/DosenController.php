@@ -13,7 +13,7 @@ class DosenController extends Controller
     private function get_file_name($name)
     {
         $array = explode('/', $name);
-        return  $array[5];
+        return  $array[1];
     }
     public function index()
     {
