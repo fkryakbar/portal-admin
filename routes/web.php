@@ -55,8 +55,8 @@ Route::get('/', function () {
             return redirect()->to('/dashboard');
         }
     }
-    // return redirect()->to('https://siamad.stitastbr.ac.id');
-    return view('welcome');
+    return redirect()->to('https://siamad.stitastbr.ac.id');
+    // return view('welcome');
 })->name('login');
 Route::get('/logout', function (Request $request) {
     Auth::logout();
