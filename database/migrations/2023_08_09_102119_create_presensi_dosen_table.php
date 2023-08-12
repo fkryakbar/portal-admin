@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('waktu_perkuliahan'); //include tanggal dari jam sampai jam brp
             $table->string('image_path');
             $table->string('status')->default('Approved');
+            $table->string('time_to_edit');
             $table->timestamps();
         });
     }
