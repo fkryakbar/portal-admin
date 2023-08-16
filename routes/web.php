@@ -56,47 +56,24 @@ Route::get('/', function () {
         }
     }
     return redirect()->to('https://siamad.stitastbr.ac.id');
-    // return view('welcome');
 })->name('login');
+
+
 Route::get('/logout', function (Request $request) {
     Auth::logout();
 
     $request->session()->invalidate();
 
     $request->session()->regenerateToken();
-    // return redirect()->to('https://siamad.stitastbr.ac.id');
     return redirect()->to('/');
 });
 
 
 // development purpose
-Route::post('/', function (Request $request) {
-    $credentials =  $request->validate([
-        'username' => 'required',
-        'password' => 'required'
-    ]);
+// Route::get('/run-dev', function () {
 
+//     $user = User::where('role', 'superAdmin')->firstOrFail();
+//     Auth::login($user);
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-
-        return redirect()->intended('dashboard');
-    }
-
-    return back()->withErrors([
-        'username' => 'The provided credentials do not match our records.',
-    ]);
-});
-
-Route::get('auth', function (Request $request) {
-    try {
-        $token = $request->token;
-        $decrypted =  Crypt::decryptString($token);
-        $decoded = json_decode($decrypted);
-        $user = User::find($decoded->id);
-        Auth::login($user);
-    } catch (\Throwable $th) {
-        abort(404);
-    }
-    return redirect()->to('/dashboard');
-});
+//     return redirect('/dashboard');
+// });

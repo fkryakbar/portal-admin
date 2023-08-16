@@ -17,9 +17,7 @@ class DosenController extends Controller
     }
     public function index()
     {
-        // $dosen = User::where('role', 'dosen')->latest()->paginate();
         $dosen = User::where('role', 'dosen')->latest()->paginate();
-        // dd($dosen->biodata);
         return view('dosen.index', [
             'dosen' => $dosen
         ]);

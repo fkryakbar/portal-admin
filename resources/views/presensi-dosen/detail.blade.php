@@ -2,8 +2,12 @@
 
 @section('title', 'Portal Admin')
 
+@section('head-tag')
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+@endsection
+
 @section('content')
-    <div class="p-5 min-h-screen">
+    <div class="p-5 min-h-screen" id="app">
         <div class="flex justify-between items-center">
             <div class="flex gap-2 items-center text-gray-500  mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
@@ -42,13 +46,13 @@
                 <select id="tahun-ajaran"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                     @foreach ($tahun_ajaran as $i => $tahun)
-                        <option @selected($i == 0) value="{{ $tahun->kode_tahun_ajaran }}">
+                        <option v-on:click="getData({{ $tahun->kode_tahun_ajaran }})" @selected($i == 0)
+                            value="{{ $tahun->kode_tahun_ajaran }}">
                             {{ $tahun->nama_tahun_ajaran }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
-
         <div class="mt-10">
             <div class="overflow-x-auto">
                 <table class="table">
@@ -61,87 +65,118 @@
                         </tr>
                     </thead>
                     <tbody id="data_presensi">
-                        <tr>
-                            <td>Loading...</td>
+                        <tr v-for="d in data" :key="d.id">
+                            <td>@{{ d.waktu_perkuliahan }}</td>
+                            <td>@{{ d.mata_kuliah }}</td>
+                            <td class="flex gap-2">
+                                <div class="bg-blue-500 p-2 rounded-lg w-fit text-white">
+                                    <a :href="`/presensi-dosen/{{ $dosen->username }}/${d.kode_pertemuan}`">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="bg-red-500 p-2 rounded-lg w-fit text-white">
+                                    <button v-on:click="delete_data(d.kode_pertemuan)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-6 h-6">
+                                            <path fill-rule="evenodd"
+                                                d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <p v-if="isLoading" class="text-center font-semibold mt-5 text-gray-500">Loading ...</p>
+            <p v-if="!isLoading && data.length == 0 " class="text-center font-semibold mt-5 text-gray-500">Belum ada
+                presensi
+            </p>
         </div>
     </div>
     <script>
         const tahun_ajaran_toggle = document.getElementById('tahun-ajaran');
-        $(document).ready(function() {
-            $('#tahun-ajaran').select2().on('change', function(e) {
-                getData(e.target.value)
-            });;
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
         })
+        const {
+            createApp,
+            ref,
+            onMounted
+        } = Vue
 
-        function getData(tahun_ajaran) {
-            document.getElementById('data_presensi').innerHTML = `<tr>
-                            <td>Loading...</td>
-                        </tr>`;
-            fetch(`/api/presensi-dosen/{{ $dosen->username }}/${tahun_ajaran}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(response => response.json())
-                .then(data => {
-                    if (data.data.length > 0) {
-                        let html = ''
-                        data.data.forEach((d) => {
-                            html += `<tr>
-                                        <td>${d.waktu_perkuliahan}</td>
-                                        <td>${d.mata_kuliah}</td>
-                                        <td class="flex gap-2">
-                                            <div class="bg-blue-500 p-2 rounded-lg w-fit text-white">
-                                                <a href="/presensi-dosen/{{ $dosen->username }}/${d.kode_pertemuan}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <div class="bg-red-500 p-2 rounded-lg w-fit text-white">
-                                                <button onclick="delete_data('${d.kode_pertemuan}')">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                                        <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>`
+        createApp({
+            setup() {
+                const data = ref([])
+                const isLoading = ref(false)
+
+                function getData(tahun_ajaran) {
+                    isLoading.value = true
+                    fetch(`/api/presensi-dosen/{{ $dosen->username }}/${tahun_ajaran}`, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        }).then(response => response.json())
+                        .then(res => {
+                            data.value = res.data;
+
+                            isLoading.value = false
                         })
-                        document.getElementById('data_presensi').innerHTML = html
-                    } else {
-                        document.getElementById('data_presensi').innerHTML = `<tr>
-                            <td>Belum ada data</td>
-                        </tr>`;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('data_presensi').innerHTML = `<tr>
-                            <td>Error</td>
-                        </tr>`;
-                });
-        }
-        getData(tahun_ajaran_toggle.value)
-
-        function delete_data(kode_pertemuan) {
-            Swal.fire({
-                title: 'Yakin mau menghapus data?',
-                text: "Data tidak akan bisa dikembalikan",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `/presensi-dosen/${kode_pertemuan}/hapus`
+                        .catch(error => {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Something Went Wrong'
+                            })
+                        });
                 }
-            })
-        }
+
+                function delete_data(kode_pertemuan) {
+                    Swal.fire({
+                        title: 'Yakin mau menghapus data?',
+                        text: "Data tidak akan bisa dikembalikan",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Hapus!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = `/presensi-dosen/${kode_pertemuan}/hapus`
+                        }
+                    })
+                }
+
+                onMounted(() => {
+                    $(document).ready(function() {
+                        $('#tahun-ajaran').select2().on('change', function(e) {
+                            getData(e.target.value)
+                        });;
+                    })
+                    getData(tahun_ajaran_toggle.value)
+                })
+
+                return {
+                    data,
+                    getData,
+                    delete_data,
+                    isLoading
+                }
+            }
+        }).mount('#app')
     </script>
 @endsection

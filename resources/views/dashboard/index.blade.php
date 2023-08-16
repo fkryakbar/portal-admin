@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <p class="font-bold">Mahasiswa</p>
-                    <p class="">20</p>
+                    <p class="">{{ count($mahasiswa) }}</p>
                 </div>
             </div>
             <div class="lg:w-[300px] w-full bg-amber-500 rounded-lg p-5 text-white flex gap-3 items-center">
@@ -37,7 +37,7 @@
                 </div>
                 <div>
                     <p class="font-bold">Dosen</p>
-                    <p class="">20</p>
+                    <p class="">{{ count($dosen) }}</p>
                 </div>
             </div>
 
