@@ -50,7 +50,7 @@
             <div class="mb-6">
                 <label for="nik" class="block mb-2 text-sm font-medium text-gray-900">Aktivitas</label>
                 <textarea id="aktivitas" rows="4" name="aktivitas"
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $presensi->aktivitas }}</textarea>
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ">{{ $presensi->aktivitas }}</textarea>
 
             </div>
             <div class="mb-6">
@@ -73,7 +73,7 @@
                 <label for="nik" class="block mb-2 text-sm font-medium text-gray-900">Detail Mahasiswa tidak
                     hadir</label>
                 <textarea id="detail_mahasiswa_tidak_hadir" rows="4" name="detail_mahasiswa_tidak_hadir"
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $presensi->detail_mahasiswa_tidak_hadir }}</textarea>
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 ">{{ $presensi->detail_mahasiswa_tidak_hadir }}</textarea>
             </div>
             <div class="mb-6">
                 <label for="waktu_perkuliahan" class="block mb-2 text-sm font-medium text-gray-900">Waktu
