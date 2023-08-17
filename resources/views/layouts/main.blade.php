@@ -18,11 +18,15 @@
 
 <body x-data="{ open: false }" class="bg-slate-100">
     <div class="flex lg:gap-3 w-full relative ">
-        <div class="lg:basis-[13%] relative flex-grow">
+        <div class="lg:basis-[13%] relative">
             <x-Sidebar />
         </div>
-        <div class="lg:basis-[87%] w-full flex-grow">
-            <div class="h-screen bg-black absolute min-h-full w-screen z-10 bg-opacity-50" x-show="open">
+        <div class="lg:basis-[87%] w-full">
+            <div x-show="open" x-transition:enter="transition ease-in-out duration-150"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in-out duration-150" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center">
             </div>
             <div class="p-2 flex flex-col">
                 <x-Header />
