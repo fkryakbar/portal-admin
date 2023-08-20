@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PresensiDosenController;
 use App\Http\Controllers\TahunAjaranController;
 use Illuminate\Http\Request;
@@ -21,6 +22,16 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::post('/{username}', [DosenController::class, 'update']);
         Route::get('/{username}/hapus', [DosenController::class, 'delete']);
     });
+
+    Route::group(['prefix' => 'mahasiswa'], function () {
+        Route::get('/', [MahasiswaController::class, 'index']);
+        Route::get('/tambah', [MahasiswaController::class, 'tambah']);
+        Route::post('/tambah', [MahasiswaController::class, 'store']);
+        Route::get('/{username}', [MahasiswaController::class, 'edit']);
+        Route::post('/{username}', [MahasiswaController::class, 'update']);
+        Route::get('/{username}/hapus', [MahasiswaController::class, 'delete']);
+    });
+
     Route::group(['prefix' => 'tahun-ajaran'], function () {
         Route::get('/', [TahunAjaranController::class, 'index']);
         Route::get('/tambah', [TahunAjaranController::class, 'tambah']);
@@ -37,6 +48,8 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::get('/{username}/{kode_pertemuan}', [PresensiDosenController::class, 'edit']);
         Route::post('/{username}/{kode_pertemuan}', [PresensiDosenController::class, 'update']);
     });
+
+
 
 
 
@@ -70,10 +83,10 @@ Route::get('/logout', function (Request $request) {
 
 
 // development purpose
-// Route::get('/run-dev', function () {
+Route::get('/run-dev', function () {
 
-//     $user = User::where('role', 'superAdmin')->firstOrFail();
-//     Auth::login($user);
+    $user = User::where('role', 'superAdmin')->firstOrFail();
+    Auth::login($user);
 
-//     return redirect('/dashboard');
-// });
+    return redirect('/dashboard');
+});

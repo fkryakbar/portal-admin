@@ -2,74 +2,86 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BiodataDosen;
+use App\Models\BiodataMahasiswa;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
-class DosenController extends Controller
+class MahasiswaController extends Controller
 {
-    private function get_file_name($name)
-    {
-        $array = explode('/', $name);
-        return  $array[1];
-    }
     public function index(Request $request)
     {
-        $dosen = User::where('role', 'dosen')->latest()->paginate();
+        $mahasiswa = User::where('role', 'mahasiswa')->latest()->paginate();
         if ($request->search) {
             $searchQuery = $request->search;
-            $dosen = User::where('role', 'dosen')->where(function (Builder $query) use ($searchQuery) {
+            $mahasiswa = User::where('role', 'mahasiswa')->where(function (Builder $query) use ($searchQuery) {
                 $query->where('name', 'like', '%' . $searchQuery . '%')
                     ->orWhere('username', 'like', '%' . $searchQuery . '%');
             })
                 ->latest()
                 ->paginate();
         }
-        return view('dosen.index', [
-            'dosen' => $dosen
+        return view('mahasiswa.index', [
+            'mahasiswa' => $mahasiswa
         ]);
     }
 
     public function tambah()
     {
-        return view('dosen.tambah');
+        return view('mahasiswa.tambah');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|max:100',
-            'username' => 'required|unique:users|max:100'
+            'username' => 'required|unique:users|max:100',
+            'angkatan' => 'required|numeric|max:4000'
         ]);
 
         $request->merge([
-            'role' => 'dosen',
+            'role' => 'mahasiswa',
             'password_reset' => Str::random(10)
         ]);
-
-        $user = User::create($request->all());
-        BiodataDosen::create(['user_id' => $user->id]);
-        return back()->with('message', 'Dosen Berhasil ditambah');
+        $user = User::create($request->except(['angkatan']));
+        BiodataMahasiswa::create([
+            'user_id' => $user->id,
+            'angkatan' => $request->angkatan
+        ]);
+        return back()->with('message', 'Mahasiswa Berhasil ditambah');
     }
+
+    public function delete($username)
+    {
+        $user = User::where('username', $username)->where('role', 'mahasiswa')->firstOrFail();
+        $biodata = BiodataMahasiswa::where('user_id', $user->id)->firstOrFail();
+
+        if ($biodata->gambar) {
+            Storage::delete($biodata->gambar);
+        }
+
+        $biodata->delete();
+        $user->delete();
+
+        return back()->with('message', 'Data Berhasil dihapus');
+    }
+
 
     public function edit($username)
     {
-        $dosen = User::where('role', 'dosen')->where('username', $username)->firstOrFail();
-        return view('dosen.edit', [
-            'dosen' => $dosen
-        ]);
+        $mahasiswa = User::where('role', 'mahasiswa')->where('username', $username)->firstOrFail();
+        return view('mahasiswa.edit', compact('mahasiswa'));
     }
 
-    public function update($username,  Request $request)
+    public function update(Request $request, $username)
     {
-        $dosen = User::where('role', 'dosen')->where('username', $username)->firstOrFail();
-
+        $mahasiswa = User::where('role', 'mahasiswa')->where('username', $username)->firstOrFail();
         $request->validate([
             'name' => 'required|max:100',
             'username' => 'required|max:100',
+            'angkatan' => 'required|max:4000',
             'is_reset_password' => 'required',
 
             'gambar' => 'file|mimes:jpeg,png|max:100',
@@ -80,14 +92,13 @@ class DosenController extends Controller
             'tempat_lahir' => 'max:50',
             'tanggal_lahir' => 'max:15',
             'alamat' => 'max:300',
-            'pendidikan_terakhir' => 'max:50',
+            'asal_sekolah' => 'max:50',
             'progam_studi' => 'max:40'
-
         ]);
 
-        $dosen->update($request->only(['name', 'username', 'is_reset_password']));
+        $mahasiswa->update($request->only(['name', 'username', 'is_reset_password']));
 
-        $biodata = BiodataDosen::where('user_id', $dosen->id)->firstOrFail();
+        $biodata = BiodataMahasiswa::where('user_id', $mahasiswa->id)->firstOrFail();
 
         if ($request->profile) {
             if ($biodata->gambar) {
@@ -98,26 +109,7 @@ class DosenController extends Controller
                 $request->merge(['gambar' =>  $path]);
             }
         }
-
-
         $biodata->update($request->except(['profile', 'name', 'username', 'is_reset_password']));
-
         return back()->with('message', 'Biodata berhasil disimpan');
-    }
-
-    public function delete($username)
-    {
-        $user = User::where('username', $username)->where('role', 'dosen')->firstOrFail();
-
-        $biodata = BiodataDosen::where('user_id', $user->id)->firstOrFail();
-
-        if ($biodata->gambar) {
-            Storage::delete($biodata->gambar);
-        }
-
-        $biodata->delete();
-        $user->delete();
-
-        return back()->with('message', 'Data Berhasil dihapus');
     }
 }

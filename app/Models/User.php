@@ -22,6 +22,8 @@ class User extends Authenticatable
     {
         if ($this->role == 'dosen') {
             return $this->hasOne(BiodataDosen::class);
+        } else if ($this->role == 'mahasiswa') {
+            return $this->hasOne(BiodataMahasiswa::class);
         }
         // return $query->when($this->role == 'dosen', function ($q) {
         // });

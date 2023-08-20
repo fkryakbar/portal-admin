@@ -1,18 +1,22 @@
 @extends('layouts.main')
 
-@section('title', 'Dosen')
+@section('title', 'Mahasiswa')
 
 @section('content')
     <div class="lg:p-5 p-2 min-h-screen">
         <div class="flex justify-between items-center">
             <div class="flex gap-2 items-center text-gray-500  mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
+                    <path fill-rule="evenodd"
+                        d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z"
+                        clip-rule="evenodd" />
                     <path
-                        d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
+                        d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z" />
                 </svg>
-                <h1 class="font-bold text-2xl">Dosen</h1>
+                <h1 class="font-bold text-2xl">Mahasiswa</h1>
             </div>
-            <a href="/dosen/tambah" class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah +</a>
+            <a href="/mahasiswa/tambah" class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah
+                +</a>
         </div>
         @if ($errors->any())
             @foreach ($errors->all() as $error)
@@ -44,7 +48,7 @@
                 </form>
             </div>
         </div>
-        <div class="relative overflow-x-auto mt-2">
+        <div class="relative overflow-x-auto mt-5">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                     <tr>
@@ -60,17 +64,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($dosen as $d)
+                    @foreach ($mahasiswa as $m)
                         <tr class="bg-white border-b ">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                {{ $d->name }}
+                                {{ $m->name }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $d->username }}
+                                {{ $m->username }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-2 text-white">
-                                    <a href="/dosen/{{ $d->username }}" class="w-fit">
+                                    <a href="/mahasiswa/{{ $m->username }}" class="w-fit">
                                         <div class="p-2 bg-green-500 rounded-lg w-fit">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -79,7 +83,7 @@
                                             </svg>
                                         </div>
                                     </a>
-                                    <button onclick="delete_data('{{ $d->username }}')" class="p-2 bg-red-500 rounded-lg">
+                                    <button onclick="delete_data('{{ $m->username }}')" class="p-2 bg-red-500 rounded-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -100,40 +104,40 @@
                 <div>
                     <p class="text-sm text-gray-700 leading-5">
                         {!! __('Showing') !!}
-                        <span class="font-medium">{{ $dosen->firstItem() }}</span>
+                        <span class="font-medium">{{ $mahasiswa->firstItem() }}</span>
                         {!! __('to') !!}
-                        <span class="font-medium">{{ $dosen->lastItem() }}</span>
+                        <span class="font-medium">{{ $mahasiswa->lastItem() }}</span>
                         {!! __('of') !!}
-                        <span class="font-medium">{{ $dosen->total() }}</span>
+                        <span class="font-medium">{{ $mahasiswa->total() }}</span>
                         {!! __('results') !!}
                     </p>
                 </div>
                 <div>
                     <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                        @if ($dosen->onFirstPage())
+                        @if ($mahasiswa->onFirstPage())
                             <span
                                 class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-l-md">
                                 {!! __('pagination.previous') !!}
                             </span>
                         @else
-                            <a href="{{ $dosen->previousPageUrl() }}" rel="prev"
+                            <a href="{{ $mahasiswa->previousPageUrl() }}" rel="prev"
                                 class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 leading-5 rounded-l-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
                                 {!! __('pagination.previous') !!}
                             </a>
                         @endif
 
-                        @for ($page = 1; $page <= $dosen->lastPage(); $page++)
-                            @if ($page == $dosen->currentPage())
+                        @for ($page = 1; $page <= $mahasiswa->lastPage(); $page++)
+                            @if ($page == $mahasiswa->currentPage())
                                 <span
                                     class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-blue-600 bg-blue-100 border border-blue-300 cursor-default leading-5">{{ $page }}</span>
                             @else
-                                <a href="{{ $dosen->url($page) }}"
+                                <a href="{{ $mahasiswa->url($page) }}"
                                     class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:bg-gray-100 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">{{ $page }}</a>
                             @endif
                         @endfor
 
-                        @if ($dosen->hasMorePages())
-                            <a href="{{ $dosen->nextPageUrl() }}" rel="next"
+                        @if ($mahasiswa->hasMorePages())
+                            <a href="{{ $mahasiswa->nextPageUrl() }}" rel="next"
                                 class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 leading-5 rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
                                 {!! __('pagination.next') !!}
                             </a>
@@ -147,7 +151,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <script>
         function delete_data(username) {
@@ -161,7 +164,7 @@
                 confirmButtonText: 'Ya, Hapus!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = `/dosen/${username}/hapus`
+                    window.location.href = `/mahasiswa/${username}/hapus`
                 }
             })
         }
