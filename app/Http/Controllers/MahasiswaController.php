@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MahasiswaExport;
 use App\Imports\MahasiswaImport;
 use App\Models\BiodataMahasiswa;
 use App\Models\Jurusan;
@@ -65,6 +66,11 @@ class MahasiswaController extends Controller
         Excel::import(new MahasiswaImport, $request->file('excel'));
 
         return back()->with('message', 'Mahasiswa Berhasil ditambah');
+    }
+
+    public function export()
+    {
+        return Excel::download(new MahasiswaExport, 'mahasiswa.xlsx');
     }
 
     public function delete($username)

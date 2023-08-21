@@ -15,8 +15,12 @@
                 </svg>
                 <h1 class="font-bold text-2xl">Mahasiswa</h1>
             </div>
-            <a href="/mahasiswa/tambah" class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah
-                +</a>
+            <div>
+                <a href="/mahasiswa/export"
+                    class="bg-blue-500 text-white p-3 rounded-lg text-sm hover:bg-blue-700">Export</a>
+                <a href="/mahasiswa/tambah" class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah
+                    +</a>
+            </div>
         </div>
         @if ($errors->any())
             @foreach ($errors->all() as $error)

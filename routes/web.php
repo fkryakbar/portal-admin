@@ -37,6 +37,7 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::get('/tambah', [MahasiswaController::class, 'tambah']);
         Route::post('/tambah', [MahasiswaController::class, 'store']);
         Route::post('/import', [MahasiswaController::class, 'import']);
+        Route::get('/export', [MahasiswaController::class, 'export']);
         Route::get('/{username}', [MahasiswaController::class, 'edit']);
         Route::post('/{username}', [MahasiswaController::class, 'update']);
         Route::get('/{username}/hapus', [MahasiswaController::class, 'delete']);
