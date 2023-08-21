@@ -15,7 +15,7 @@
                 </svg>
                 <h1 class="font-bold text-2xl">Mahasiswa</h1>
             </div>
-            <div>
+            <div class="flex flex-wrap justify-end gap-2">
                 <a href="/mahasiswa/export"
                     class="bg-blue-500 text-white p-3 rounded-lg text-sm hover:bg-blue-700">Export</a>
                 <a href="/mahasiswa/tambah" class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah
