@@ -24,7 +24,7 @@ return new class extends Migration
             $table->date('tanggal_lahir')->nullable();
             $table->text('alamat')->nullable();
             $table->string('asal_sekolah')->nullable();
-            $table->string('progam_studi')->nullable();
+            $table->string('program_studi')->nullable();
             $table->timestamps();
         });
     }

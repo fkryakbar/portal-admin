@@ -177,10 +177,15 @@
                                 placeholder="MAN 1 Tapin">
                         </div>
                         <div class="mb-6">
-                            <label for="progam_studi" class="block mb-2 text-sm font-medium text-gray-900">Progam
+                            <label for="program_studi" class="block mb-2 text-sm font-medium text-gray-900">Program
                                 Studi</label>
-                            <select id="progam_studi" name="progam_studi"
+                            <select id="program_studi" name="program_studi"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  ">
+                                @foreach ($jurusan as $j)
+                                    <option @selected($mahasiswa->biodata->program_studi == $j->kode_jurusan) value="{{ $j->kode_jurusan }}">
+                                        {{ $j->kode_jurusan }} - {{ $j->nama_jurusan }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\PresensiDosenController;
 use App\Http\Controllers\TahunAjaranController;
@@ -14,6 +15,14 @@ use App\Models\User;
 Route::middleware(['superAdmin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
+    Route::group(['prefix' => 'jurusan'], function () {
+        Route::get('/', [JurusanController::class, 'index']);
+        Route::get('/tambah', [JurusanController::class, 'tambah']);
+        Route::post('/tambah', [JurusanController::class, 'store']);
+        Route::get('/{kode_jurusan}', [JurusanController::class, 'edit']);
+        Route::post('/{kode_jurusan}', [JurusanController::class, 'update']);
+        Route::get('/{kode_jurusan}/hapus', [JurusanController::class, 'delete']);
+    });
     Route::group(['prefix' => 'dosen'], function () {
         Route::get('/', [DosenController::class, 'index']);
         Route::get('/tambah', [DosenController::class, 'tambah']);
@@ -27,6 +36,7 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::get('/', [MahasiswaController::class, 'index']);
         Route::get('/tambah', [MahasiswaController::class, 'tambah']);
         Route::post('/tambah', [MahasiswaController::class, 'store']);
+        Route::post('/import', [MahasiswaController::class, 'import']);
         Route::get('/{username}', [MahasiswaController::class, 'edit']);
         Route::post('/{username}', [MahasiswaController::class, 'update']);
         Route::get('/{username}/hapus', [MahasiswaController::class, 'delete']);

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\MahasiswaImport;
 use App\Models\BiodataMahasiswa;
+use App\Models\Jurusan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
@@ -53,6 +56,17 @@ class MahasiswaController extends Controller
         return back()->with('message', 'Mahasiswa Berhasil ditambah');
     }
 
+    public function import(Request $request)
+    {
+        $request->validate([
+            'excel' => 'mimes:xlsx,xls|required'
+        ]);
+
+        Excel::import(new MahasiswaImport, $request->file('excel'));
+
+        return back()->with('message', 'Mahasiswa Berhasil ditambah');
+    }
+
     public function delete($username)
     {
         $user = User::where('username', $username)->where('role', 'mahasiswa')->firstOrFail();
@@ -72,7 +86,8 @@ class MahasiswaController extends Controller
     public function edit($username)
     {
         $mahasiswa = User::where('role', 'mahasiswa')->where('username', $username)->firstOrFail();
-        return view('mahasiswa.edit', compact('mahasiswa'));
+        $jurusan = Jurusan::latest()->get();
+        return view('mahasiswa.edit', compact('mahasiswa', 'jurusan'));
     }
 
     public function update(Request $request, $username)

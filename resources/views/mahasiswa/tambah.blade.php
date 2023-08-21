@@ -15,9 +15,10 @@
                 </svg>
                 <h1 class="font-bold text-2xl">Mahasiswa</h1>
             </div>
-            <form action="">
+            <form action="/mahasiswa/import" method="POST" enctype="multipart/form-data">
                 <div class="join lg:join-horizontal join-vertical">
-                    <input type="file" class="file-input file-input-bordered join-item" />
+                    <input type="file" name="excel" class="file-input file-input-bordered join-item" />
+                    @csrf
                     <button class="btn join-item">Import</button>
                 </div>
             </form>
