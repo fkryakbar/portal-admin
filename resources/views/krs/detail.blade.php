@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Presensi Dosen')
+@section('title', 'Detail KRS')
 
 @section('head-tag')
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -8,16 +8,19 @@
 
 @section('content')
     <div class="p-5 min-h-screen" id="app">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-3">
             <div class="flex gap-2 items-center text-gray-500  mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
                     <path fill-rule="evenodd"
-                        d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zM9.75 17.25a.75.75 0 00-1.5 0V18a.75.75 0 001.5 0v-.75zm2.25-3a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3a.75.75 0 01.75-.75zm3.75-1.5a.75.75 0 00-1.5 0V18a.75.75 0 001.5 0v-5.25z"
+                        d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.54 15h6.42l.5 1.5H8.29l.5-1.5zm8.085-8.995a.75.75 0 10-.75-1.299 12.81 12.81 0 00-3.558 3.05L11.03 8.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l2.47-2.47 1.617 1.618a.75.75 0 001.146-.102 11.312 11.312 0 013.612-3.321z"
                         clip-rule="evenodd" />
-                    <path
-                        d="M14.25 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0016.5 7.5h-1.875a.375.375 0 01-.375-.375V5.25z" />
                 </svg>
-                <h1 class="font-bold text-2xl">Presensi</h1>
+                <h1 class="font-bold text-2xl">Kartu Rencana Studi</h1>
+            </div>
+            <div class="flex justify-end">
+                <a class="btn btn-sm bg-green-500 border-0 hover:bg-green-700 text-white"
+                    href="/krs/{{ $mahasiswa->username }}/tambah">Tambah
+                    +</a>
             </div>
         </div>
         @if ($errors->any())
@@ -26,7 +29,6 @@
                     <li>{{ $error }}</li>
                 </div>
             @endforeach
-
         @endif
         @if (session()->has('message'))
             <div class="p-3 bg-green-500 text-white rounded-lg my-2">
@@ -35,12 +37,12 @@
         @endif
         <div class="text-sm breadcrumbs">
             <ul>
-                <li><a href="/presensi-dosen">Presensi Dosen</a></li>
-                <li>Dosen</li>
+                <li><a href="/krs">KRS</a></li>
+                <li>{{ $mahasiswa->username }}</li>
             </ul>
         </div>
         <div class="flex justify-between items-center mt-4">
-            <p class="hidden lg:block font-bold text-gray-700 text-xl">Data Presensi</p>
+            <p class="hidden lg:block font-bold text-gray-700 text-xl">Data KRS</p>
             <div class="flex gap-2 items-center">
                 <p>Semester</p>
                 <select id="tahun-ajaran"
@@ -58,19 +60,41 @@
                 <table class="table">
                     <!-- head -->
                     <thead>
-                        <tr>
-                            <th>Waktu Perkuliahan</th>
-                            <th>Mata Kuliah</th>
+                        <tr class="bg-gray-100 font-bold">
+                            <th>No</th>
+                            <th>Detail</th>
+                            <th>Dosen</th>
+                            <th>Jadwal</th>
+                            <th>SKS</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="data_presensi">
-                        <tr v-for="d in data" :key="d.id">
-                            <td>@{{ d.waktu_perkuliahan }}</td>
-                            <td>@{{ d.mata_kuliah }}</td>
+                        <tr v-for="(d,i) in data" :key="d.id">
+                            <td class="whitespace-nowrap w-[10px]">@{{ i + 1 }}</td>
+                            <td class="whitespace-nowrap w-[10px]">
+                                <p class="bg-blue-500 rounded text-xs p-1 text-white font-semibold inline">
+                                    @{{ d.kode_mata_kuliah }}
+                                </p>
+                                <div v-if="d.mata_kuliah" class="w-fit mt-2">
+                                    <p class="text-gray-500">
+                                        @{{ d.mata_kuliah.nama }}
+                                    </p>
+                                    <p class="text-gray-500">
+                                        Semester @{{ d.mata_kuliah.semester }}
+                                    </p>
+                                </div>
+                            </td>
+                            <td>@{{ d.dosen_ampu }}</td>
+                            <td>@{{ d.jadwal }}</td>
+                            <td>
+                                <div v-if="d.mata_kuliah">
+                                    @{{ d.mata_kuliah.jumlah_sks }}
+                                </div>
+                            </td>
                             <td class="flex gap-2">
                                 <div class="bg-blue-500 p-2 rounded-lg w-fit text-white">
-                                    <a :href="`/presensi-dosen/{{ $dosen->username }}/${d.kode_pertemuan}`">
+                                    <a :href="`/krs/{{ $mahasiswa->username }}/${d.id}`">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -79,7 +103,7 @@
                                     </a>
                                 </div>
                                 <div class="bg-red-500 p-2 rounded-lg w-fit text-white">
-                                    <button v-on:click="delete_data(d.kode_pertemuan)">
+                                    <button v-on:click="delete_data(d.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                             class="w-6 h-6">
                                             <path fill-rule="evenodd"
@@ -94,8 +118,7 @@
                 </table>
             </div>
             <p v-if="isLoading" class="text-center font-semibold mt-5 text-gray-500">Loading ...</p>
-            <p v-if="!isLoading && data.length == 0 " class="text-center font-semibold mt-5 text-gray-500">Belum ada
-                presensi
+            <p v-if="!isLoading && data.length == 0 " class="text-center font-semibold mt-5 text-gray-500">Belum Ada KRS
             </p>
         </div>
     </div>
@@ -126,7 +149,7 @@
 
                 function getData(tahun_ajaran) {
                     isLoading.value = true
-                    fetch(`/api/presensi-dosen/{{ $dosen->username }}/${tahun_ajaran}`, {
+                    fetch(`/api/krs/{{ $mahasiswa->username }}/${tahun_ajaran}`, {
                             method: 'GET',
                             headers: {
                                 'Accept': 'application/json'
@@ -134,7 +157,7 @@
                         }).then(response => response.json())
                         .then(res => {
                             data.value = res.data;
-
+                            console.log(res.data);
                             isLoading.value = false
                         })
                         .catch(error => {
@@ -145,7 +168,7 @@
                         });
                 }
 
-                function delete_data(kode_pertemuan) {
+                function delete_data(id) {
                     Swal.fire({
                         title: 'Yakin mau menghapus data?',
                         text: "Data tidak akan bisa dikembalikan",
@@ -156,7 +179,7 @@
                         confirmButtonText: 'Ya, Hapus!'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = `/presensi-dosen/${kode_pertemuan}/hapus`
+                            window.location.href = `/krs/${id}/hapus`
                         }
                     })
                 }

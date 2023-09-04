@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Mahasiswa')
+@section('title', 'Kartu Rencana Studi')
 
 @section('content')
     <div class="lg:p-5 p-2 min-h-screen">
@@ -8,18 +8,15 @@
             <div class="flex gap-2 items-center text-gray-500  mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
                     <path fill-rule="evenodd"
-                        d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z"
+                        d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.54 15h6.42l.5 1.5H8.29l.5-1.5zm8.085-8.995a.75.75 0 10-.75-1.299 12.81 12.81 0 00-3.558 3.05L11.03 8.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l2.47-2.47 1.617 1.618a.75.75 0 001.146-.102 11.312 11.312 0 013.612-3.321z"
                         clip-rule="evenodd" />
-                    <path
-                        d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z" />
                 </svg>
-                <h1 class="font-bold text-2xl">Mahasiswa</h1>
+                <h1 class="font-bold text-2xl">Kartu Rencana Studi</h1>
             </div>
-            <div class="flex flex-wrap justify-end gap-2">
-                <a href="/mahasiswa/export"
-                    class="bg-blue-500 text-white p-3 rounded-lg text-sm hover:bg-blue-700">Export</a>
-                <a href="/mahasiswa/tambah" class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah
-                    +</a>
+            <div>
+                <label for="import" class="btn bg-green-500 btn-sm border-0 hover:bg-green-700 text-white">
+                    Import
+                </label>
             </div>
         </div>
         @if ($errors->any())
@@ -28,7 +25,6 @@
                     <li>{{ $error }}</li>
                 </div>
             @endforeach
-
         @endif
         @if (session()->has('message'))
             <div class="p-3 bg-green-500 text-white rounded-lg my-2">
@@ -78,23 +74,17 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-2 text-white">
-                                    <a href="/mahasiswa/{{ $m->username }}" class="w-fit">
+                                    <a href="/krs/{{ $m->username }}" class="w-fit">
                                         <div class="p-2 bg-green-500 rounded-lg w-fit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                class="w-6 h-6">
+                                                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                                                    clip-rule="evenodd" />
                                             </svg>
                                         </div>
                                     </a>
-                                    <button onclick="delete_data('{{ $m->username }}')" class="p-2 bg-red-500 rounded-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                        </svg>
-
-                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -156,21 +146,20 @@
             </div>
         </div>
     </div>
-    <script>
-        function delete_data(username) {
-            Swal.fire({
-                title: 'Yakin mau menghapus data?',
-                text: "Data tidak akan bisa dikembalikan",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `/mahasiswa/${username}/hapus`
-                }
-            })
-        }
-    </script>
+@endsection
+@section('bottom')
+    <input type="checkbox" id="import" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-5">Import KRS</h3>
+            <form action="/krs/import" method="POST" enctype="multipart/form-data">
+                <div class="join lg:join-horizontal join-vertical">
+                    <input type="file" name="excel" class="file-input file-input-bordered join-item" />
+                    @csrf
+                    <button class="btn join-item">Import</button>
+                </div>
+            </form>
+        </div>
+        <label class="modal-backdrop" for="import">Close</label>
+    </div>
 @endsection

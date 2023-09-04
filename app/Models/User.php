@@ -28,6 +28,11 @@ class User extends Authenticatable
         // return $query->when($this->role == 'dosen', function ($q) {
         // });
     }
+
+    public function riwayat_registrasi()
+    {
+        return $this->hasOne(RiwayatRegistrasi::class, 'username', 'username');
+    }
     protected $guarded = [];
     protected $hidden = ['password', 'is_reset_password'];
 }

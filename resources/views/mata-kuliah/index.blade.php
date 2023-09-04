@@ -1,24 +1,24 @@
 @extends('layouts.main')
 
-@section('title', 'Mahasiswa')
+@section('title', 'Mata Kuliah')
 
 @section('content')
     <div class="lg:p-5 p-2 min-h-screen">
         <div class="flex justify-between items-center">
             <div class="flex gap-2 items-center text-gray-500  mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10">
-                    <path fill-rule="evenodd"
-                        d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z"
-                        clip-rule="evenodd" />
                     <path
-                        d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z" />
+                        d="M11.644 1.59a.75.75 0 01.712 0l9.75 5.25a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.712 0l-9.75-5.25a.75.75 0 010-1.32l9.75-5.25z" />
+                    <path
+                        d="M3.265 10.602l7.668 4.129a2.25 2.25 0 002.134 0l7.668-4.13 1.37.739a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.71 0l-9.75-5.25a.75.75 0 010-1.32l1.37-.738z" />
+                    <path
+                        d="M10.933 19.231l-7.668-4.13-1.37.739a.75.75 0 000 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 000-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 01-2.134-.001z" />
                 </svg>
-                <h1 class="font-bold text-2xl">Mahasiswa</h1>
+                <h1 class="font-bold text-2xl">Mata Kuliah</h1>
             </div>
             <div class="flex flex-wrap justify-end gap-2">
-                <a href="/mahasiswa/export"
-                    class="bg-blue-500 text-white p-3 rounded-lg text-sm hover:bg-blue-700">Export</a>
-                <a href="/mahasiswa/tambah" class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah
+                <a href="/mata-kuliah/tambah"
+                    class="bg-green-500 text-white p-3 rounded-lg text-sm hover:bg-green-700">Tambah
                     +</a>
             </div>
         </div>
@@ -57,10 +57,22 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                     <tr>
                         <th scope="col" class="px-6 py-3">
+                            Kode Mata Kuliah
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Nama
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            NIM
+                            SKS
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Semester
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            W/P
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Keterangan
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Aksi
@@ -68,17 +80,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($mahasiswa as $m)
+                    @foreach ($matkul as $m)
                         <tr class="bg-white border-b ">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
-                                {{ $m->name }}
+                                {{ $m->kode }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $m->username }}
+                                {{ $m->nama }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $m->jumlah_sks }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $m->semester }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $m->jenis }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $m->keterangan }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-2 text-white">
-                                    <a href="/mahasiswa/{{ $m->username }}" class="w-fit">
+                                    <a href="/mata-kuliah/{{ $m->kode }}" class="w-fit">
                                         <div class="p-2 bg-green-500 rounded-lg w-fit">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -87,13 +111,12 @@
                                             </svg>
                                         </div>
                                     </a>
-                                    <button onclick="delete_data('{{ $m->username }}')" class="p-2 bg-red-500 rounded-lg">
+                                    <button onclick="delete_data('{{ $m->kode }}')" class="p-2 bg-red-500 rounded-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                         </svg>
-
                                     </button>
                                 </div>
                             </td>
@@ -108,40 +131,40 @@
                 <div>
                     <p class="text-sm text-gray-700 leading-5">
                         {!! __('Showing') !!}
-                        <span class="font-medium">{{ $mahasiswa->firstItem() }}</span>
+                        <span class="font-medium">{{ $matkul->firstItem() }}</span>
                         {!! __('to') !!}
-                        <span class="font-medium">{{ $mahasiswa->lastItem() }}</span>
+                        <span class="font-medium">{{ $matkul->lastItem() }}</span>
                         {!! __('of') !!}
-                        <span class="font-medium">{{ $mahasiswa->total() }}</span>
+                        <span class="font-medium">{{ $matkul->total() }}</span>
                         {!! __('results') !!}
                     </p>
                 </div>
                 <div>
                     <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                        @if ($mahasiswa->onFirstPage())
+                        @if ($matkul->onFirstPage())
                             <span
                                 class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-l-md">
                                 {!! __('pagination.previous') !!}
                             </span>
                         @else
-                            <a href="{{ $mahasiswa->previousPageUrl() }}" rel="prev"
+                            <a href="{{ $matkul->previousPageUrl() }}" rel="prev"
                                 class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 leading-5 rounded-l-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
                                 {!! __('pagination.previous') !!}
                             </a>
                         @endif
 
-                        @for ($page = 1; $page <= $mahasiswa->lastPage(); $page++)
-                            @if ($page == $mahasiswa->currentPage())
+                        @for ($page = 1; $page <= $matkul->lastPage(); $page++)
+                            @if ($page == $matkul->currentPage())
                                 <span
                                     class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-blue-600 bg-blue-100 border border-blue-300 cursor-default leading-5">{{ $page }}</span>
                             @else
-                                <a href="{{ $mahasiswa->url($page) }}"
+                                <a href="{{ $matkul->url($page) }}"
                                     class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:bg-gray-100 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">{{ $page }}</a>
                             @endif
                         @endfor
 
-                        @if ($mahasiswa->hasMorePages())
-                            <a href="{{ $mahasiswa->nextPageUrl() }}" rel="next"
+                        @if ($matkul->hasMorePages())
+                            <a href="{{ $matkul->nextPageUrl() }}" rel="next"
                                 class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 leading-5 rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
                                 {!! __('pagination.next') !!}
                             </a>
@@ -168,7 +191,7 @@
                 confirmButtonText: 'Ya, Hapus!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = `/mahasiswa/${username}/hapus`
+                    window.location.href = `/mata-kuliah/${username}/hapus`
                 }
             })
         }

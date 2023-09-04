@@ -120,15 +120,14 @@ class MahasiswaController extends Controller
         $mahasiswa->update($request->only(['name', 'username', 'is_reset_password']));
 
         $biodata = BiodataMahasiswa::where('user_id', $mahasiswa->id)->firstOrFail();
-
-        if ($request->profile) {
-            if ($biodata->gambar) {
-                $path = $request->file('profile')->storeAs('/profile', $this->get_file_name($biodata->gambar));
-                $request->merge(['gambar' =>  $biodata->gambar]);
+        if ($request->file('profile')) {
+            if ($mahasiswa->biodata->gambar) {
+                Storage::delete($mahasiswa->biodata->gambar);
+                $path =  $request->file('profile')->store('/profile');
             } else {
-                $path = $request->file('profile')->store('/profile');
-                $request->merge(['gambar' =>  $path]);
+                $path =  $request->file('profile')->store('/profile');
             }
+            $request->merge(['gambar' => $path]);
         }
         $biodata->update($request->except(['profile', 'name', 'username', 'is_reset_password']));
         return back()->with('message', 'Biodata berhasil disimpan');
