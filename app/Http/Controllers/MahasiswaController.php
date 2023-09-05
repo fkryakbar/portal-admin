@@ -52,7 +52,8 @@ class MahasiswaController extends Controller
         $user = User::create($request->except(['angkatan']));
         BiodataMahasiswa::create([
             'user_id' => $user->id,
-            'angkatan' => $request->angkatan
+            'angkatan' => $request->angkatan,
+            'program_studi' => 'PAI'
         ]);
         return back()->with('message', 'Mahasiswa Berhasil ditambah');
     }
