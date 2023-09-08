@@ -97,7 +97,14 @@
                                     {{ $m->username }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $m->file_bukti_path }}
+                                    @if ($m->riwayat_registrasi->file_bukti_path)
+                                        <a href="{{ asset('storage/' . $m->riwayat_registrasi->file_bukti_path) }}"
+                                            target="_blank">
+                                            <div class="bg-blue-500 text-white font-semibold p-2 rounded-lg mt-1 w-fit">
+                                                Buka File
+                                            </div>
+                                        </a>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     @if ($m->riwayat_registrasi->status_registrasi == 'pending')
