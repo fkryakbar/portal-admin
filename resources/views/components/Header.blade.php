@@ -1,4 +1,4 @@
-<div class="rounded bg-white drop-shadow mt-3 p-5 flex justify-between items-center">
+<div class="rounded bg-white shadow mt-3 p-5 flex justify-between items-center">
     <div class="text-gray-700 font-bold flex gap-2 items-center">
         <button x-on:click="open = !open" class="lg:hidden block">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">

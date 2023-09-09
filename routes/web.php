@@ -135,10 +135,10 @@ Route::get('/logout', function (Request $request) {
 
 
 // development purpose
-Route::get('/run-dev', function () {
+// Route::get('/run-dev', function () {
 
-    $user = User::where('role', 'superAdmin')->firstOrFail();
-    Auth::login($user);
+//     $user = User::where('role', 'superAdmin')->firstOrFail();
+//     Auth::login($user);
 
-    return redirect('/dashboard');
-});
+//     return redirect('/dashboard');
+// });
