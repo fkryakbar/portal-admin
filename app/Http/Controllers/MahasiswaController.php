@@ -76,7 +76,7 @@ class MahasiswaController extends Controller
 
     public function delete($username)
     {
-        $user = User::where('username', (int)$username)->where('role', 'mahasiswa')->firstOrFail();
+        $user = User::where('username', $username)->where('role', 'mahasiswa')->firstOrFail();
         $biodata = BiodataMahasiswa::where('user_id', $user->id)->firstOrFail();
 
         if ($biodata->gambar) {
@@ -92,14 +92,14 @@ class MahasiswaController extends Controller
 
     public function edit($username)
     {
-        $mahasiswa = User::where('role', 'mahasiswa')->where('username', (int)$username)->firstOrFail();
+        $mahasiswa = User::where('role', 'mahasiswa')->where('username', 20211100093)->firstOrFail();
         $jurusan = Jurusan::latest()->get();
         return view('mahasiswa.edit', compact('mahasiswa', 'jurusan'));
     }
 
     public function update(Request $request, $username)
     {
-        $mahasiswa = User::where('role', 'mahasiswa')->where('username', (int)$username)->firstOrFail();
+        $mahasiswa = User::where('role', 'mahasiswa')->where('username', $username)->firstOrFail();
         $request->validate([
             'name' => 'required|max:100',
             'username' => 'required|max:100',

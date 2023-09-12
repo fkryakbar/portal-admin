@@ -23,38 +23,38 @@ class HasilStudiImport implements ToCollection, WithHeadingRow
                 $huruf = null;
                 $bobot = null;
                 if ($row['tugas'] && $row['uts'] && $row['uas'] && $mata_kuliah) {
-                    $angka = ((int)$row['tugas'] * 30 +  (int)$row['uts'] * 30 + (int)$row['uas'] * 40) / 100;
+                    $angka = ((float)$row['tugas'] * 30 +  (float)$row['uts'] * 30 + (float)$row['uas'] * 40) / 100;
                     $angka = number_format($angka, 2);
                     $huruf = 'E';
-                    $bobot = 0 * (int)$mata_kuliah->jumlah_sks;
+                    $bobot = 0 * (float)$mata_kuliah->jumlah_sks;
 
                     if ($angka >= 85) {
                         $huruf = "A";
-                        $bobot = 4 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 4 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 80) {
                         $huruf = 'A-';
-                        $bobot = 3.75 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 3.75 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 75) {
                         $huruf = 'B+';
-                        $bobot = 3.5 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 3.5 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 70) {
                         $huruf = 'B';
-                        $bobot = 3 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 3 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 65) {
                         $huruf = 'B-';
-                        $bobot = 2.70 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 2.70 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 60) {
                         $huruf = 'C+';
-                        $bobot = 2.35 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 2.35 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 55) {
                         $huruf = 'C';
-                        $bobot = 2 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 2 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 50) {
                         $huruf = 'D+';
-                        $bobot = 1.50 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 1.50 * (float)$mata_kuliah->jumlah_sks;
                     } else if ($angka >= 40) {
                         $huruf = 'D';
-                        $bobot = 1 * (int)$mata_kuliah->jumlah_sks;
+                        $bobot = 1 * (float)$mata_kuliah->jumlah_sks;
                     }
                 }
 
