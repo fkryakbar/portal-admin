@@ -6,12 +6,17 @@ use App\Imports\MataKuliahImport;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Builder;
 
 class MataKuliahController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $matkul  = MataKuliah::latest()->paginate();
+        if ($request->search) {
+            $searchQuery = $request->search;
+            $matkul = MataKuliah::where('kode', 'like', '%' . $searchQuery . '%')->orWhere('nama', 'like', '%' . $searchQuery . '%')->orWhere('semester', 'like', '%' . $searchQuery . '%')->orWhere('jenis', 'like', '%' . $searchQuery . '%')->latest()->paginate();
+        }
         return view('mata-kuliah.index', compact('matkul'));
     }
 
