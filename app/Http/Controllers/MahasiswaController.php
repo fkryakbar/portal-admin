@@ -92,7 +92,7 @@ class MahasiswaController extends Controller
 
     public function edit($username)
     {
-        $mahasiswa = User::where('role', 'mahasiswa')->where('username', 20211100093)->firstOrFail();
+        $mahasiswa = User::where('role', 'mahasiswa')->where('username', $username)->firstOrFail();
         $jurusan = Jurusan::latest()->get();
         return view('mahasiswa.edit', compact('mahasiswa', 'jurusan'));
     }
