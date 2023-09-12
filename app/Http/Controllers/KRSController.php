@@ -31,13 +31,13 @@ class KRSController extends Controller
     public function detail($username)
     {
         $tahun_ajaran = TahunAjaran::latest()->get();
-        $mahasiswa = User::where('username', $username)->firstOrFail();
+        $mahasiswa = User::where('username', (int)$username)->firstOrFail();
         return view('krs.detail', compact('tahun_ajaran', 'mahasiswa'));
     }
 
     public function tambah($username)
     {
-        $mahasiswa = User::where('username', $username)->firstOrFail();
+        $mahasiswa = User::where('username', (int)$username)->firstOrFail();
         $tahun_ajaran = TahunAjaran::latest()->get();
         $matkul = MataKuliah::latest()->get();
         return view('krs.tambah', compact('mahasiswa', 'tahun_ajaran', 'matkul'));
@@ -78,16 +78,16 @@ class KRSController extends Controller
     public function edit($username, $krs_id)
     {
         $tahun_ajaran = TahunAjaran::latest()->get();
-        $mahasiswa = User::where('username', $username)->firstOrFail();
-        $krs = KartuStudi::where('username', $username)->where('id', $krs_id)->firstOrFail();
+        $mahasiswa = User::where('username', (int)$username)->firstOrFail();
+        $krs = KartuStudi::where('username', (int)$username)->where('id', $krs_id)->firstOrFail();
         $matkul = MataKuliah::latest()->get();
         return view('krs.edit', compact('tahun_ajaran', 'mahasiswa', 'krs', 'matkul'));
     }
 
     public function update($username, $krs_id, Request $request)
     {
-        $mahasiswa = User::where('username', $username)->firstOrFail();
-        $krs = KartuStudi::where('username', $username)->where('id', $krs_id)->firstOrFail();
+        $mahasiswa = User::where('username', (int)$username)->firstOrFail();
+        $krs = KartuStudi::where('username', (int)$username)->where('id', $krs_id)->firstOrFail();
 
         $request->validate([
             'kode_mata_kuliah' => 'required',
@@ -103,7 +103,7 @@ class KRSController extends Controller
 
     public function api_get_krs($username, $tahun_ajaran)
     {
-        $krs = KartuStudi::where('username', $username)->where('tahun_ajaran', $tahun_ajaran)->with('mata_kuliah')->latest()->get();
+        $krs = KartuStudi::where('username', (int)$username)->where('tahun_ajaran', $tahun_ajaran)->with('mata_kuliah')->latest()->get();
 
         return response([
             'message' => 'Success',

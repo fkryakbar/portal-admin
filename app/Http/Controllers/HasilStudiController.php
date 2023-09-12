@@ -31,21 +31,21 @@ class HasilStudiController extends Controller
     public function detail($username)
     {
         $tahun_ajaran = TahunAjaran::latest()->get();
-        $mahasiswa = User::where('username', $username)->firstOrFail();
+        $mahasiswa = User::where('username', (int)$username)->firstOrFail();
         return view('hasil-studi.detail', compact('mahasiswa', 'tahun_ajaran'));
     }
 
     public function edit($username, $khs_id)
     {
-        $mahasiswa = User::where('username', $username)->firstOrFail();
-        $khs = KartuStudi::where('username', $username)->where('id', $khs_id)->firstOrFail();
+        $mahasiswa = User::where('username', (int)$username)->firstOrFail();
+        $khs = KartuStudi::where('username', (int)$username)->where('id', $khs_id)->firstOrFail();
         return view('hasil-studi.edit', compact('mahasiswa', 'khs'));
     }
 
     public function update(Request $request, $username, $khs_id)
     {
-        $mahasiswa = User::where('username', $username)->firstOrFail();
-        $khs = KartuStudi::where('username', $username)->where('id', $khs_id)->firstOrFail();
+        $mahasiswa = User::where('username', (int)$username)->firstOrFail();
+        $khs = KartuStudi::where('username', (int)$username)->where('id', $khs_id)->firstOrFail();
         $mata_kuliah = MataKuliah::where('kode', $khs->kode_mata_kuliah)->first();
         $request->validate([
             'tugas' => 'numeric|max:100',
@@ -107,7 +107,7 @@ class HasilStudiController extends Controller
 
     public function api_get_khs($username, $tahun_ajaran)
     {
-        $khs = KartuStudi::where('username', $username)->where('tahun_ajaran', $tahun_ajaran)->with('mata_kuliah')->latest()->get();
+        $khs = KartuStudi::where('username', (int)$username)->where('tahun_ajaran', $tahun_ajaran)->with('mata_kuliah')->latest()->get();
 
         $ip = 0;
         $total_bobot = 0;
