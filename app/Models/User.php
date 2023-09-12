@@ -35,4 +35,8 @@ class User extends Authenticatable
     }
     protected $guarded = [];
     protected $hidden = ['password', 'is_reset_password'];
+
+    protected $casts = [
+        'username' => 'integer',
+    ];
 }
