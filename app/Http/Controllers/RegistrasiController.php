@@ -56,16 +56,14 @@ class RegistrasiController extends Controller
 
     public function detail($kode_tahun_ajaran,  Request $request)
     {
-        $mahasiswa = User::where('role', 'mahasiswa')->with('riwayat_registrasi')->latest()->paginate();
+
+        $mahasiswa = RiwayatRegistrasi::where('kode_tahun_ajaran', $kode_tahun_ajaran)->with('mahasiswa')->latest()->paginate();
+
         if ($request->search) {
             $searchQuery = $request->search;
-            $mahasiswa = User::where('role', 'mahasiswa')->where(function (Builder $query) use ($searchQuery) {
-                $query->where('name', 'like', '%' . $searchQuery . '%')
-                    ->orWhere('username', 'like', '%' . $searchQuery . '%');
-            })
-                ->with('riwayat_registrasi')
-                ->latest()
-                ->paginate();
+            $mahasiswa = RiwayatRegistrasi::where('kode_tahun_ajaran', $kode_tahun_ajaran)->whereHas('mahasiswa', function ($query) use ($searchQuery) {
+                $query->where('name', 'like', '%' . $searchQuery . '%')->orWhere('username', 'like', '%' . $searchQuery . '%');
+            })->latest()->paginate();
         }
         $belum_registrasi = RiwayatRegistrasi::where('kode_tahun_ajaran', $kode_tahun_ajaran)->where('status_registrasi', 'verified')->get();
         $riwayat_registrasi = RiwayatRegistrasi::where('kode_tahun_ajaran', $kode_tahun_ajaran)->get();

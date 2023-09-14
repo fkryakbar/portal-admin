@@ -91,15 +91,14 @@
                                     {{ $i + 1 }}
                                 </td>
                                 <th scope="row" class="px-6 py-4">
-                                    {{ $m->name }}
+                                    {{ $m->mahasiswa->name }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ $m->username }}
+                                    {{ $m->mahasiswa->username }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($m->riwayat_registrasi->file_bukti_path)
-                                        <a href="{{ asset('storage/' . $m->riwayat_registrasi->file_bukti_path) }}"
-                                            target="_blank">
+                                    @if ($m->file_bukti_path)
+                                        <a href="{{ asset('storage/' . $m->file_bukti_path) }}" target="_blank">
                                             <div class="bg-blue-500 text-white font-semibold p-2 rounded-lg mt-1 w-fit">
                                                 Buka File
                                             </div>
@@ -107,21 +106,21 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($m->riwayat_registrasi->status_registrasi == 'pending')
+                                    @if ($m->status_registrasi == 'pending')
                                         <div
                                             class="p-1 rounded-lg bg-amber-500 uppercase text-white font-semibold w-fit text-sm">
-                                            {{ $m->riwayat_registrasi->status_registrasi }}
+                                            {{ $m->status_registrasi }}
                                         </div>
                                     @else
                                         <div
                                             class="p-1 rounded-lg bg-green-500 uppercase text-white font-semibold w-fit text-sm">
-                                            {{ $m->riwayat_registrasi->status_registrasi }}
+                                            {{ $m->status_registrasi }}
                                         </div>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-2 text-white">
-                                        <button onclick="change_status('{{ $m->username }}')"
+                                        <button onclick="change_status('{{ $m->mahasiswa->username }}')"
                                             class="p-2 bg-blue-500 rounded-lg text-xs">
                                             Ubah Status
                                         </button>
