@@ -91,10 +91,14 @@
                                     {{ $i + 1 }}
                                 </td>
                                 <th scope="row" class="px-6 py-4">
-                                    {{ $m->mahasiswa->name }}
+                                    @if ($m->mahasiswa)
+                                        {{ $m->mahasiswa->name }}
+                                    @else
+                                        -
+                                    @endif
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ $m->mahasiswa->username }}
+                                    {{ $m->username }}
                                 </td>
                                 <td class="px-6 py-4">
                                     @if ($m->file_bukti_path)
@@ -120,7 +124,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-2 text-white">
-                                        <button onclick="change_status('{{ $m->mahasiswa->username }}')"
+                                        <button onclick="change_status('{{ $m->username }}')"
                                             class="p-2 bg-blue-500 rounded-lg text-xs">
                                             Ubah Status
                                         </button>
