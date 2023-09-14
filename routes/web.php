@@ -51,8 +51,8 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::get('/tambah', [RegistrasiController::class, 'tambah']);
         Route::post('/tambah', [RegistrasiController::class, 'store']);
         Route::get('/{kode_tahun_ajaran}', [RegistrasiController::class, 'detail']);
-        Route::get('/{kode_tahun_ajaran}/{username}', [RegistrasiController::class, 'change_status']);
         Route::get('/{kode_tahun_ajaran}/hapus', [RegistrasiController::class, 'delete']);
+        Route::get('/{kode_tahun_ajaran}/{username}', [RegistrasiController::class, 'change_status']);
     });
 
     Route::group(['prefix' => 'tahun-ajaran'], function () {
