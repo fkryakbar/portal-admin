@@ -165,7 +165,7 @@
                     $(document).ready(function() {
                         $('#tahun-ajaran').select2().on('change', function(e) {
                             getData(e.target.value)
-                        });;
+                        });
                     })
                     getData(tahun_ajaran_toggle.value)
                 })

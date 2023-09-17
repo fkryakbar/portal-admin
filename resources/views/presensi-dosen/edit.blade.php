@@ -43,7 +43,19 @@
             @csrf
             <div class="mb-6">
                 <label for="mata_kuliah" class="block mb-2 text-sm font-medium text-gray-900">Mata Kuliah</label>
-                <input type="text" id="mata_kuliah" name="mata_kuliah" value="{{ $presensi->mata_kuliah }}"
+                <select id="mata_kuliah" name="mata_kuliah"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                    <option value="" selected disabled>Pilih Mata Kuliah</option>
+                    @foreach ($mata_kuliah as $i => $m)
+                        <option value="{{ $m->nama }}" @selected($presensi->mata_kuliah == $m->nama)>
+                            {{ $m->nama }}</option>
+                    @endforeach
+                </select>
+
+            </div>
+            <div class="mb-6">
+                <label for="jumlah_sks" class="block mb-2 text-sm font-medium text-gray-900">Jumlah SKS</label>
+                <input type="number" id="jumlah_sks" name="jumlah_sks" value="{{ $presensi->jumlah_sks }}"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5">
 
             </div>
@@ -97,5 +109,7 @@
             </div>
         </form>
     </div>
-
+    <script>
+        $('#mata_kuliah').select2()
+    </script>
 @endsection

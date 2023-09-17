@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MataKuliah;
 use App\Models\PresensiDosen;
 use App\Models\TahunAjaran;
 use App\Models\User;
@@ -33,10 +34,11 @@ class PresensiDosenController extends Controller
     {
         $dosen = User::where('username', $username)->where('role', 'dosen')->firstOrFail();
         $presensi = PresensiDosen::where('user_id', $dosen->id)->where('kode_pertemuan', $kode_pertemuan)->firstOrFail();
-
+        $mata_kuliah = MataKuliah::latest()->get();
         return view('presensi-dosen.edit', [
             'dosen' => $dosen,
-            'presensi' => $presensi
+            'presensi' => $presensi,
+            'mata_kuliah' => $mata_kuliah
         ]);
     }
 
@@ -63,6 +65,7 @@ class PresensiDosenController extends Controller
     {
         $request->validate([
             'mata_kuliah' => 'required|max:50',
+            'jumlah_sks' => 'required|numeric|max:10',
             'aktivitas' => 'required|max:500',
             'jumlah_mahasiswa' => 'required|numeric|max:300',
             'mahasiswa_tidak_hadir' => 'required|numeric|max:300',
