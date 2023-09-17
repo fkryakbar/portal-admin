@@ -29,10 +29,30 @@
                 <p>{{ session('message') }}</p>
             </div>
         @endif
+        <div class="flex items-center justify-end space-x-4 mt-5">
+            <div class="form-control flex">
+                <form action="" method="GET">
+                    <div class="input-group">
+                        <input type="text" placeholder="Cari" name="search" class="input input-bordered"
+                            value="{{ request('search') }}" />
+                        <button class="btn btn-square" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="relative overflow-x-auto mt-5">
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                     <tr>
+                        <th scope="col" class="px-6 py-3">
+                            No
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             Nama
                         </th>
@@ -45,8 +65,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($dosen as $d)
+                    @foreach ($dosen as $i => $d)
                         <tr class="bg-white border-b ">
+                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                                {{ $i + 1 }}
+                            </td>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                 {{ $d->name }}
                             </th>
@@ -72,6 +95,59 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
+            <div
+                class="lg:flex-1 flex lg:flex-nowrap flex-wrap gap-2 flex-col lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700 leading-5">
+                        {!! __('Showing') !!}
+                        <span class="font-medium">{{ $dosen->firstItem() }}</span>
+                        {!! __('to') !!}
+                        <span class="font-medium">{{ $dosen->lastItem() }}</span>
+                        {!! __('of') !!}
+                        <span class="font-medium">{{ $dosen->total() }}</span>
+                        {!! __('results') !!}
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                        @if ($dosen->onFirstPage())
+                            <span
+                                class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-l-md">
+                                {!! __('pagination.previous') !!}
+                            </span>
+                        @else
+                            <a href="{{ $dosen->previousPageUrl() }}" rel="prev"
+                                class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 leading-5 rounded-l-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
+                                {!! __('pagination.previous') !!}
+                            </a>
+                        @endif
+
+                        @for ($page = 1; $page <= $dosen->lastPage(); $page++)
+                            @if ($page == $dosen->currentPage())
+                                <span
+                                    class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-blue-600 bg-blue-100 border border-blue-300 cursor-default leading-5">{{ $page }}</span>
+                            @else
+                                <a href="{{ $dosen->url($page) }}"
+                                    class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 hover:bg-gray-100 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">{{ $page }}</a>
+                            @endif
+                        @endfor
+
+                        @if ($dosen->hasMorePages())
+                            <a href="{{ $dosen->nextPageUrl() }}" rel="next"
+                                class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 leading-5 rounded-r-md hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
+                                {!! __('pagination.next') !!}
+                            </a>
+                        @else
+                            <span
+                                class="relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default leading-5 rounded-r-md">
+                                {!! __('pagination.next') !!}
+                            </span>
+                        @endif
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
     <script>

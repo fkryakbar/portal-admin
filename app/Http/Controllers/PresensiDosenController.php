@@ -8,12 +8,22 @@ use App\Models\TahunAjaran;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
 class PresensiDosenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dosen = User::where('role', 'dosen')->latest()->get();
+        $dosen = User::where('role', 'dosen')->latest()->paginate();
+        if ($request->search) {
+            $searchQuery = $request->search;
+            $dosen = User::where('role', 'dosen')->where(function (Builder $query) use ($searchQuery) {
+                $query->where('name', 'like', '%' . $searchQuery . '%')
+                    ->orWhere('username', 'like', '%' . $searchQuery . '%');
+            })
+                ->latest()
+                ->paginate();
+        }
         return view('presensi-dosen.index', [
             'dosen' => $dosen
         ]);
