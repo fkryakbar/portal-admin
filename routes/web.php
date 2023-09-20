@@ -96,6 +96,7 @@ Route::middleware(['superAdmin'])->group(function () {
 
     Route::group(['prefix' => 'presensi-dosen'], function () {
         Route::get('/', [PresensiDosenController::class, 'index']);
+        Route::get('/cetak/{kode_tahun_ajaran}', [PresensiDosenController::class, 'cetak']);
         Route::get('/{username}', [PresensiDosenController::class, 'detail']);
         Route::get('/{kode_pertemuan}/hapus', [PresensiDosenController::class, 'delete']);
         Route::get('/{username}/{kode_pertemuan}', [PresensiDosenController::class, 'edit']);

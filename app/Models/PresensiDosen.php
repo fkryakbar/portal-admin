@@ -11,5 +11,10 @@ class PresensiDosen extends Model
 
     protected $table = 'presensi_dosen';
 
+
+    public function dosen()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
     protected $guarded = [];
 }

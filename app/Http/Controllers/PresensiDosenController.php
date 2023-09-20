@@ -6,15 +6,18 @@ use App\Models\MataKuliah;
 use App\Models\PresensiDosen;
 use App\Models\TahunAjaran;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class PresensiDosenController extends Controller
 {
     public function index(Request $request)
     {
         $dosen = User::where('role', 'dosen')->latest()->paginate();
+        $tahun_ajaran = TahunAjaran::latest()->get();
         if ($request->search) {
             $searchQuery = $request->search;
             $dosen = User::where('role', 'dosen')->where(function (Builder $query) use ($searchQuery) {
@@ -25,7 +28,8 @@ class PresensiDosenController extends Controller
                 ->paginate();
         }
         return view('presensi-dosen.index', [
-            'dosen' => $dosen
+            'dosen' => $dosen,
+            'tahun_ajaran' => $tahun_ajaran
         ]);
     }
 
@@ -94,5 +98,20 @@ class PresensiDosenController extends Controller
 
         $presensi->update($request->except(['foto_perkuliahan']));
         return back()->with('message', 'Data berhasil diperbarui');
+    }
+
+    public function cetak($kode_tahun_ajaran)
+    {
+        $tahun_ajaran = TahunAjaran::where('kode_tahun_ajaran', $kode_tahun_ajaran)->firstOrFail();
+
+
+        // $dosen = PresensiDosen::where('kode_tahun_ajaran', $kode_tahun_ajaran)->select('user_id')->groupBy('user_id')->get();
+        $presensi = PresensiDosen::where('kode_tahun_ajaran', $kode_tahun_ajaran)->with('dosen')->get()->groupBy('dosen.name');
+        // dd($presensi->keys());
+
+        $pdf = Pdf::loadView('cetak.presensi-dosen', compact('presensi', 'tahun_ajaran'));
+
+        // return view('cetak.presensi-dosen', compact('presensi', 'tahun_ajaran'));
+        return $pdf->stream('Presensi Dosen.pdf');
     }
 }

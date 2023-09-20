@@ -33,6 +33,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(RiwayatRegistrasi::class, 'username', 'username');
     }
+
+    public function presensi_dosen()
+    {
+        return $this->hasMany(PresensiDosen::class);
+    }
     protected $guarded = [];
     protected $hidden = ['password', 'is_reset_password'];
 }
