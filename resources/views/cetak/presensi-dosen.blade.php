@@ -72,10 +72,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $total_sks = 0;
+                    @endphp
                     @foreach ($p as $i => $item)
-                        @php
-                            $total_sks = 0;
-                        @endphp
                         <tr>
                             <td style="white-space: nowrap; text-align: center">
                                 {{ $i + 1 }}</td>
