@@ -100,14 +100,15 @@ class PresensiDosenController extends Controller
         return back()->with('message', 'Data berhasil diperbarui');
     }
 
-    public function cetak($kode_tahun_ajaran)
+    public function cetak($kode_tahun_ajaran, Request $request)
     {
         $tahun_ajaran = TahunAjaran::where('kode_tahun_ajaran', $kode_tahun_ajaran)->firstOrFail();
 
-
-        // $dosen = PresensiDosen::where('kode_tahun_ajaran', $kode_tahun_ajaran)->select('user_id')->groupBy('user_id')->get();
         $presensi = PresensiDosen::where('kode_tahun_ajaran', $kode_tahun_ajaran)->with('dosen')->get()->groupBy('dosen.name');
-        // dd($presensi->keys());
+        if ($request->bulan) {
+            $bulan_query = date('Y') . '-' . $request->bulan . '-%';
+            $presensi = PresensiDosen::where('kode_tahun_ajaran', $kode_tahun_ajaran)->where('waktu_perkuliahan', 'LIKE', $bulan_query)->with('dosen')->get()->groupBy('dosen.name');
+        }
 
         $pdf = Pdf::loadView('cetak.presensi-dosen', compact('presensi', 'tahun_ajaran'));
 
