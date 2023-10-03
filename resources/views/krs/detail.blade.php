@@ -3,7 +3,7 @@
 @section('title', 'Detail KRS')
 
 @section('head-tag')
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 @endsection
 
 @section('content')
