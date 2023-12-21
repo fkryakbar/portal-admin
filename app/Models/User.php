@@ -25,8 +25,6 @@ class User extends Authenticatable
         } else if ($this->role == 'mahasiswa') {
             return $this->hasOne(BiodataMahasiswa::class);
         }
-        // return $query->when($this->role == 'dosen', function ($q) {
-        // });
     }
 
     public function riwayat_registrasi()
@@ -40,4 +38,14 @@ class User extends Authenticatable
     }
     protected $guarded = [];
     protected $hidden = ['password', 'is_reset_password'];
+
+    public function kartu_studi()
+    {
+        return $this->hasMany(KartuStudi::class, 'username', 'username');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsToMany(Kelas::class, 'user_kelas');
+    }
 }

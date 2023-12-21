@@ -4,12 +4,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HasilStudiController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KRSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\PresensiDosenController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Livewire\Kelas\Index as Kelas;
+use App\Livewire\Kelas\ManageKelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +67,11 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::get('/{kode_tahun_ajaran}/hapus', [TahunAjaranController::class, 'delete']);
     });
 
+    Route::group(['prefix' => 'kelas'], function () {
+        Route::get('/', Kelas::class);
+        Route::get('/{kode_kelas}', ManageKelas::class);
+        Route::get('/{kode_kelas}/cetak', [KelasController::class, 'cetak']);
+    });
     Route::group(['prefix' => 'krs'], function () {
         Route::get('/', [KRSController::class, 'index']);
         Route::get('/{username}', [KRSController::class, 'detail']);

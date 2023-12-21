@@ -1,7 +1,9 @@
 @extends('layouts.main')
 
 @section('title', 'Tambah Dosen')
-
+@section('head-tag')
+    <script src="//unpkg.com/alpinejs" defer></script>
+@endsection
 @section('content')
     <div class="p-5 ">
         <div class="flex justify-between items-center">

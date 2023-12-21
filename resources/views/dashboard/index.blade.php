@@ -1,7 +1,9 @@
 @extends('layouts.main')
 
 @section('title', 'Portal Admin')
-
+@section('head-tag')
+    <script src="//unpkg.com/alpinejs" defer></script>
+@endsection
 @section('content')
     <div class="p-5 min-h-screen">
         <div class="flex gap-2 items-center text-gray-500  mb-3">

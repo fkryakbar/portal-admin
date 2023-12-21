@@ -1,7 +1,9 @@
 @extends('layouts.main')
 
 @section('title', 'Edit Mahasiswa')
-
+@section('head-tag')
+    <script src="//unpkg.com/alpinejs" defer></script>
+@endsection
 @section('content')
 
     <div class="lg:p-5 p-1 ">
