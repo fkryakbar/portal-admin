@@ -101,8 +101,10 @@
                     </div>
                     <select id="mata_kuliah" wire:model="kode_mata_kuliah"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <option value="" selected>
+                            Pilih Mata Kuliah</option>
                         @foreach ($mata_kuliah as $i => $m)
-                            <option wire:key='{{ $m->kode }}' value="{{ $m->kode }}">
+                            <option value="{{ $m->kode }}">
                                 {{ $m->nama }}</option>
                         @endforeach
                     </select>
@@ -116,6 +118,8 @@
                     </div>
                     <select id="tahun_ajaran" wire:model="kode_tahun_ajaran"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <option value="" selected>
+                            Pilih Tahun Ajaran</option>
                         @foreach (App\Models\TahunAjaran::latest()->get() as $i => $t)
                             <option wire:key='{{ $t->kode_tahun_ajaran }}' value="{{ $t->kode_tahun_ajaran }}">
                                 {{ $t->nama_tahun_ajaran }}</option>
@@ -139,11 +143,4 @@
             </form>
         </div>
     </div>
-    @script
-        <script>
-            $(document).ready(function() {
-                $('#mata_kuliah').select2()
-            })
-        </script>
-    @endscript
 </div>
