@@ -46,9 +46,15 @@
                 <div class="grid lg:grid-cols-4 gap-3 grid-cols-1 mb-5">
                     @foreach ($t as $k)
                         <div wire:key='{{ $k->id }}' class="border-[1px] border-gray-200 rounded p-3">
-                            <div class="flex justify-center">
-                                <p class="text-center text-xs bg-green-500 p-1 rounded text-white font-semibold">
-                                    {{ $k->tahun_ajaran->nama_tahun_ajaran }}</p>
+                            <div class="flex gap-1 justify-center">
+                                @if ($k->is_visible == 0)
+                                    <p class="text-center text-xs bg-red-500 p-1 rounded text-white font-semibold">
+                                        HIDDEN</p>
+                                @endif
+                                @if ($k->is_validated == 1)
+                                    <p class="text-center text-xs bg-green-500 p-1 rounded text-white font-semibold">
+                                        VALIDATED</p>
+                                @endif
                             </div>
                             <h1 class="text-center text-lg font-semibold text-gray-700">{{ $k->nama }}</h1>
                             <p class="text-center text-sm text-gray-700">{{ $k->kode_mata_kuliah }}</p>
