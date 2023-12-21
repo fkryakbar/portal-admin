@@ -53,7 +53,7 @@ class Index extends Component
     public function render()
     {
         return view('kelas.index', [
-            'mata_kuliah' => MataKuliah::all(),
+            'mata_kuliah' => MataKuliah::orderBy('nama')->get(),
             'kelas' => Kelas::latest()->with('tahun_ajaran')->get()->groupBy('tahun_ajaran.nama_tahun_ajaran')
         ]);
     }

@@ -22,6 +22,9 @@ class ManageKelas extends Component
     public $nama;
 
     #[Validate('required')]
+    public $kode_mata_kuliah;
+
+    #[Validate('required')]
     public $kode_tahun_ajaran;
 
     #[Validate('required|max:30')]
@@ -40,6 +43,7 @@ class ManageKelas extends Component
         $kelas->update([
             'nama' => $this->nama,
             'jadwal' => $this->jadwal,
+            'kode_mata_kuliah' => $this->kode_mata_kuliah,
             'kode_tahun_ajaran' => $this->kode_tahun_ajaran,
             'is_validated' => $this->is_validated,
             'is_visible' => $this->is_visible,
@@ -53,6 +57,7 @@ class ManageKelas extends Component
         $kelas = Kelas::where('kode_kelas', $kode_kelas)->firstOrFail();
         $this->nama = $kelas->nama;
         $this->jadwal = $kelas->jadwal;
+        $this->kode_mata_kuliah = $kelas->kode_mata_kuliah;
         $this->kode_tahun_ajaran = $kelas->kode_tahun_ajaran;
         $this->is_visible = $kelas->is_visible;
         $this->is_validated = $kelas->is_validated;
@@ -98,9 +103,9 @@ class ManageKelas extends Component
 
         $mahasiswa_selected = User::where('role', 'mahasiswa')->whereHas('kelas', function ($query) {
             $query->where('kode_kelas', $this->kode_kelas);
-        })->with(['kartu_studi' => function ($query) use ($kelas) {
+        })->whereHas('kartu_studi', function ($query) use ($kelas) {
             $query->where('kode_mata_kuliah', $kelas->mata_kuliah->kode);
-        }])->get();
+        })->with('kartu_studi', 'kelas')->get();
         // dd($mahasiswa_selected);
         $dosen_query = $this->dosen_query;
         $mahasiswa_query = $this->mahasiswa_query;
@@ -131,7 +136,7 @@ class ManageKelas extends Component
 
         return view('kelas.manage-kelas', [
             'kelas' => $kelas,
-            'mata_kuliah' => MataKuliah::all(),
+            'mata_kuliah' => MataKuliah::orderBy('nama')->get(),
             'dosen' => $dosen,
             'mahasiswa' => $mahasiswa,
             'mahasiswa_selected' => $mahasiswa_selected

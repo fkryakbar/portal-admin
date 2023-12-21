@@ -219,12 +219,23 @@
                         <p class="text-red-500 text-xs">{{ $message }}</p>
                     @enderror
                 </label>
+
                 <label class="form-control w-full max-w-xs">
                     <div class="label">
-                        <span class="label-text">Mata Kuliah</span>
+                        <span class="label-text">Mata Kuliah <span class="text-red-500 text-xs">*Pastikan Mahasiswa
+                                yang dipilih memiliki KRS mata
+                                kuliah dibawah</span></span>
                     </div>
-                    <input type="text" value="{{ $kelas->mata_kuliah->nama }}" placeholder="Statistika A"
-                        disabled class="input input-bordered w-full max-w-xs" />
+                    <select id="mata_kuliah" wire:model="kode_mata_kuliah"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        @foreach ($mata_kuliah as $i => $m)
+                            <option value="{{ $m->kode }}">
+                                {{ $m->nama }}</option>
+                        @endforeach
+                    </select>
+                    @error('kode_mata_kuliah')
+                        <p class="text-red-500 text-xs">{{ $message }}</p>
+                    @enderror
                 </label>
                 <label class="form-control w-full max-w-xs">
                     <div class="label">
