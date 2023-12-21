@@ -42,6 +42,9 @@
             <div class="mt-3">
                 <input class="input input-bordered join-item w-full" wire:model.live.debounce.250ms="dosen_query"
                     placeholder="Cari dosen" />
+                @if (count($dosen) == 0 && Str::length($dosen_query) >= 3)
+                    <p class="text-xs text-red-500 mt-2">Dosen tidak ditemukan</p>
+                @endif
             </div>
             <div class="mt-3">
                 <div class="overflow-x-auto">
@@ -118,6 +121,9 @@
             <div class="mt-3">
                 <input class="input input-bordered join-item w-full" wire:model.live.debounce.250ms="mahasiswa_query"
                     placeholder="Cari Mahasiswa" />
+                @if (count($mahasiswa) == 0 && Str::length($mahasiswa_query) >= 3)
+                    <p class="text-xs text-red-500 mt-2">Mahasiswa tidak ditemukan</p>
+                @endif
             </div>
             <div class="mt-3">
                 <div class="overflow-x-auto">
