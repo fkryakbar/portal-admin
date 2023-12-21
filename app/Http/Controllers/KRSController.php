@@ -7,6 +7,8 @@ use App\Models\KartuStudi;
 use App\Models\MataKuliah;
 use App\Models\TahunAjaran;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
@@ -109,5 +111,21 @@ class KRSController extends Controller
             'message' => 'Success',
             'data' => $krs
         ]);
+    }
+    public function cetak($username, $kode_tahun_ajaran)
+    {
+        $mahasiswa = User::where('username', $username)->firstOrFail();
+        $krs = KartuStudi::where('username', $username)->where('tahun_ajaran', $kode_tahun_ajaran)->with('mata_kuliah')->latest()->get();
+        $tahun_ajaran = TahunAjaran::where('kode_tahun_ajaran', $kode_tahun_ajaran)->first();
+        $tanggal =  Carbon::today()->translatedFormat('d F Y');
+        $total_sks = 0;
+        foreach ($krs as $key => $k) {
+            if ($k->mata_kuliah) {
+                $total_sks += (int) $k->mata_kuliah->jumlah_sks;
+            }
+        }
+        $pdf = Pdf::loadView('cetak.krs', compact('krs', 'total_sks', 'tanggal', 'tahun_ajaran', 'mahasiswa'));
+        // return view('cetak.krs', compact('krs', 'total_sks', 'tanggal', 'tahun_ajaran'));
+        return $pdf->stream('Kartu Hasil Studi.pdf');
     }
 }

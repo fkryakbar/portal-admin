@@ -11,4 +11,8 @@ class BiodataMahasiswa extends Model
 
     protected $table = 'biodata_mahasiswa';
     protected $guarded = [];
+    public function jurusan()
+    {
+        return $this->hasOne(Jurusan::class, 'kode_jurusan', 'program_studi');
+    }
 }

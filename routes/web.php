@@ -81,14 +81,17 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::get('{username}/{krs_id}', [KRSController::class, 'edit']);
         Route::post('{username}/{krs_id}', [KRSController::class, 'update']);
         Route::post('/import', [KRSController::class, 'import']);
+        Route::get('/{username}/{kode_tahun_ajaran}/cetak', [KRSController::class, 'cetak']);
     });
 
     Route::group(['prefix' => 'hasil-studi'], function () {
         Route::get('/', [HasilStudiController::class, 'index']);
         Route::get('/{username}', [HasilStudiController::class, 'detail']);
+        Route::get('/{username}/cetak-rekapitulasi', [HasilStudiController::class, 'cetak_rekapitulasi']);
         Route::get('{username}/{khs_id}', [HasilStudiController::class, 'edit']);
         Route::post('{username}/{khs_id}', [HasilStudiController::class, 'update']);
         Route::post('/import', [HasilStudiController::class, 'import']);
+        Route::get('/{username}/{kode_tahun_ajaran}/cetak-khs', [HasilStudiController::class, 'cetak_khs']);
     });
 
 

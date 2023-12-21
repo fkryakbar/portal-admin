@@ -8,6 +8,8 @@ use App\Models\MataKuliah;
 use App\Models\TahunAjaran;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -141,5 +143,46 @@ class HasilStudiController extends Controller
 
         Excel::import(new HasilStudiImport, $request->file('excel'));
         return back()->with('message', 'Hasil Studi Berhasil diperbarui');
+    }
+
+    public function cetak_khs($username, $kode_tahun_ajaran)
+    {
+        $mahasiswa = User::where('username', $username)->firstOrFail();
+        $khs = KartuStudi::where('username', $username)->where('tahun_ajaran', $kode_tahun_ajaran)->with('mata_kuliah')->latest()->get();
+        $tahun_ajaran = TahunAjaran::where('kode_tahun_ajaran', $kode_tahun_ajaran)->first();
+        $tanggal =  Carbon::today()->translatedFormat('d F Y');
+        $ip = 0;
+        $total_bobot = 0;
+        $total_sks = 0;
+        if (count($khs) > 0) {
+            foreach ($khs as $key => $k) {
+                if ($k->mata_kuliah) {
+                    $total_sks += (float) $k->mata_kuliah->jumlah_sks;
+                    $total_bobot += (float)$k->bobot;
+                }
+            }
+            if ($total_sks > 0) {
+                $ip = number_format($total_bobot / $total_sks, 2);
+            }
+        }
+        $pdf = Pdf::loadView('cetak.khs', compact('khs', 'ip', 'total_bobot', 'total_sks', 'tanggal', 'tahun_ajaran', 'mahasiswa'));
+        // return view('cetak.khs', compact('khs', 'ip', 'total_bobot', 'total_sks', 'tanggal', 'tahun_ajaran'));
+        return $pdf->stream('Kartu Hasil Studi.pdf');
+    }
+
+    public function cetak_rekapitulasi($username)
+    {
+        $mahasiswa = User::where('username', $username)->firstOrFail();
+        $rekap = KartuStudi::where('username', $username)->with('mata_kuliah')->latest()->get();
+        $tanggal =  Carbon::today()->translatedFormat('d F Y');
+        $total_bobot = 0;
+        $total_sks = 0;
+        foreach ($rekap as $key => $r) {
+            $total_bobot += (float) $r->bobot;
+            $total_sks += (float) $r->mata_kuliah->jumlah_sks;
+        }
+        $pdf = Pdf::loadView('cetak.rekapitulasi', compact('rekap', 'total_bobot', 'total_sks', 'tanggal', 'mahasiswa'));
+        // return view('cetak.rekapitulasi', compact('rekap', 'ipk', 'total_bobot', 'total_sks'));
+        return $pdf->stream('Rekapitulasi Hasil Studi.pdf');
     }
 }
