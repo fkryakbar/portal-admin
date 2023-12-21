@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    #[Validate('required|max:30')]
+    #[Validate('required|max:100')]
     public $nama;
 
     #[Validate('required')]
