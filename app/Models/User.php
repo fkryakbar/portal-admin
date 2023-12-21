@@ -48,4 +48,26 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Kelas::class, 'user_kelas');
     }
+
+
+    public function ipk()
+    {
+        if ($this->role == 'mahasiswa') {
+            $khs = KartuStudi::where('username', $this->username)->with('mata_kuliah')->latest()->get();
+            $ipk = 0;
+            $total_bobot = 0;
+            $total_sks = 0;
+            if (count($khs) > 0) {
+                foreach ($khs as $key => $k) {
+                    if ($k->mata_kuliah) {
+                        $total_sks += (float) $k->mata_kuliah->jumlah_sks;
+                        $total_bobot += (float)$k->bobot;
+                    }
+                }
+                $ipk = number_format($total_bobot / $total_sks, 2);
+            }
+
+            return $ipk;
+        }
+    }
 }
