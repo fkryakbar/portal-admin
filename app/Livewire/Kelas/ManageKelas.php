@@ -105,7 +105,9 @@ class ManageKelas extends Component
             $query->where('kode_kelas', $this->kode_kelas);
         })->whereHas('kartu_studi', function ($query) use ($kelas) {
             $query->where('kode_mata_kuliah', $kelas->mata_kuliah->kode);
-        })->with('kartu_studi', 'kelas')->get();
+        })->with(['kartu_studi' => function ($query) use ($kelas) {
+            $query->where('kode_mata_kuliah', $kelas->mata_kuliah_kode);
+        }, 'kelas'])->get();
         // dd($mahasiswa_selected);
         $dosen_query = $this->dosen_query;
         $mahasiswa_query = $this->mahasiswa_query;
