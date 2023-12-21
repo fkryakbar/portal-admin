@@ -54,7 +54,7 @@ class User extends Authenticatable
     {
         if ($this->role == 'mahasiswa') {
             $khs = KartuStudi::where('username', $this->username)->with('mata_kuliah')->latest()->get();
-            $ipk = 0;
+            $ipk = number_format(0, 2);
             $total_bobot = 0;
             $total_sks = 0;
             if (count($khs) > 0) {

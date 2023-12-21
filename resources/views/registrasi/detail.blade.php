@@ -90,7 +90,7 @@
                         @foreach ($mahasiswa as $i => $m)
                             <tr class="bg-white border-b font-medium text-gray-900 whitespace-nowrap ">
                                 <td class="px-6 py-4">
-                                    {{ $i + 1 }}
+                                    {{ ($mahasiswa->currentPage() - 1) * $mahasiswa->perPage() + $i + 1 }}</td>
                                 </td>
                                 <th scope="row" class="px-6 py-4">
                                     @if ($m->mahasiswa)

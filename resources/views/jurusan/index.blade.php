@@ -54,6 +54,7 @@
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                     <tr>
+                        <th></th>
                         <th scope="col" class="px-6 py-3">
                             Kode Jurusan
                         </th>
@@ -66,8 +67,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($jurusan as $j)
+                    @foreach ($jurusan as $i => $j)
                         <tr class="bg-white border-b ">
+                            <td class="font-semibold text-center">{{ $i + 1 }}</td>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                 {{ $j->kode_jurusan }}
                             </th>

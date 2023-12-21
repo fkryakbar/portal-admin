@@ -55,6 +55,7 @@
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                     <tr>
+                        <th></th>
                         <th scope="col" class="px-6 py-3">
                             Nama
                         </th>
@@ -62,18 +63,26 @@
                             NIM
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            IPK
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Aksi
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($mahasiswa as $m)
+                    @foreach ($mahasiswa as $i => $m)
                         <tr class="bg-white border-b ">
+                            <th>{{ ($mahasiswa->currentPage() - 1) * $mahasiswa->perPage() + $i + 1 }}</td>
+                            </th>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                 {{ $m->name }}
                             </th>
                             <td class="px-6 py-4">
                                 {{ $m->username }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $m->ipk() }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-2 text-white">

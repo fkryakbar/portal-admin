@@ -50,6 +50,7 @@
             <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                     <tr>
+                        <th></th>
                         <th scope="col" class="px-6 py-3">
                             Nama
                         </th>
@@ -62,8 +63,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($dosen as $d)
+                    @foreach ($dosen as $i => $d)
                         <tr class="bg-white border-b ">
+                            <td class="font-semibold text-center">
+                                {{ ($dosen->currentPage() - 1) * $dosen->perPage() + $i + 1 }}</td>
+                            </td>
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                 {{ $d->name }}
                             </th>
