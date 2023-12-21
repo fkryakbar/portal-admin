@@ -18,7 +18,7 @@ class ManageKelas extends Component
     #[Locked]
     public $kode_kelas;
 
-    #[Validate('required|max:30')]
+    #[Validate('required|max:100')]
     public $nama;
 
     #[Validate('required')]
