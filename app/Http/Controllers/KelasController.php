@@ -18,7 +18,9 @@ class KelasController extends Controller
             $query->where('kode_kelas', $kode_kelas);
         })->whereHas('kartu_studi', function ($query) use ($kelas) {
             $query->where('kode_mata_kuliah', $kelas->mata_kuliah->kode);
-        })->with('kartu_studi', 'kelas')->get();
+        })->with(['kartu_studi' => function ($query) use ($kelas) {
+            $query->where('kode_mata_kuliah', $kelas->mata_kuliah->kode);
+        }, 'kelas'])->get();
 
         $tanggal =  Carbon::today()->translatedFormat('d F Y');
         $pdf = Pdf::loadView('cetak.rekap-nilai', compact('tanggal', 'kelas', 'mahasiswa'));
