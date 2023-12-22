@@ -8,6 +8,7 @@ use App\Models\MataKuliah;
 use App\Models\TahunAjaran;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\User;
+use App\Traits\KonversiNilai;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,6 +16,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class HasilStudiController extends Controller
 {
+    use KonversiNilai;
+
     public function index(Request $request)
     {
         $mahasiswa = User::where('role', 'mahasiswa')->latest()->paginate();
@@ -50,57 +53,20 @@ class HasilStudiController extends Controller
         $khs = KartuStudi::where('username', $username)->where('id', $khs_id)->firstOrFail();
         $mata_kuliah = MataKuliah::where('kode', $khs->kode_mata_kuliah)->first();
         $request->validate([
-            'tugas' => 'numeric|max:100',
-            'uts' => 'numeric|max:100',
-            'uas' => 'numeric|max:100'
+            'tugas' => 'numeric|min:0|max:100',
+            'uts' => 'numeric|min:0|max:100',
+            'uas' => 'numeric|min:0|max:100'
         ]);
 
-        $angka = null;
-        $huruf = null;
-        $bobot = null;
-        if ($request->tugas && $request->uts && $request->uas && $mata_kuliah) {
-            $angka = ((float)$request->tugas * 30 +  (float)$request->uts * 30 + (float)$request->uas * 40) / 100;
-            $angka = number_format($angka, 2);
-            $huruf = 'E';
-            $bobot = 0 * (float)$mata_kuliah->jumlah_sks;
-
-            if ($angka >= 85) {
-                $huruf = "A";
-                $bobot = 4 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 80) {
-                $huruf = 'A-';
-                $bobot = 3.75 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 75) {
-                $huruf = 'B+';
-                $bobot = 3.5 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 70) {
-                $huruf = 'B';
-                $bobot = 3 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 65) {
-                $huruf = 'B-';
-                $bobot = 2.70 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 60) {
-                $huruf = 'C+';
-                $bobot = 2.35 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 55) {
-                $huruf = 'C';
-                $bobot = 2 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 50) {
-                $huruf = 'D+';
-                $bobot = 1.50 * (float)$mata_kuliah->jumlah_sks;
-            } else if ($angka >= 40) {
-                $huruf = 'D';
-                $bobot = 1 * (float)$mata_kuliah->jumlah_sks;
-            }
-        }
+        $nilai = $this->konversi_nilai($request->tugas, $request->uts, $request->uas, $mata_kuliah->jumlah_sks);
 
         $khs->update([
-            'tugas' => $request->tugas,
-            'uts' => $request->uts,
-            'uas' => $request->uas,
-            'angka' => $angka,
-            'bobot' => $bobot,
-            'huruf' => $huruf,
+            'tugas' => $nilai->tugas,
+            'uts' => $nilai->uts,
+            'uas' => $nilai->uas,
+            'angka' => $nilai->angka,
+            'bobot' => $nilai->bobot,
+            'huruf' => $nilai->huruf,
         ]);
 
         return back()->with('message', 'KHS Berhasil diperbarui');
