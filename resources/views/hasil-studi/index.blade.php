@@ -63,6 +63,9 @@
                             NIM
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Total SKS
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             IPK
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -80,6 +83,9 @@
                             </th>
                             <td class="px-6 py-4">
                                 {{ $m->username }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $m->total_sks() }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $m->ipk() }}

@@ -71,6 +71,10 @@
                 <td>: {{ $mahasiswa->username }}</td>
             </tr>
             <tr>
+                <td>Total SKS</td>
+                <td>: {{ $mahasiswa->total_sks() }}</td>
+            </tr>
+            <tr>
                 <td>IPK</td>
                 <td>: {{ $mahasiswa->ipk() }}</td>
             </tr>

@@ -56,18 +56,28 @@ class User extends Authenticatable
             $khs = KartuStudi::where('username', $this->username)->with('mata_kuliah')->latest()->get();
             $ipk = number_format(0, 2);
             $total_bobot = 0;
-            $total_sks = 0;
             if (count($khs) > 0) {
                 foreach ($khs as $key => $k) {
                     if ($k->mata_kuliah) {
-                        $total_sks += (float) $k->mata_kuliah->jumlah_sks;
                         $total_bobot += (float)$k->bobot;
                     }
                 }
-                $ipk = number_format($total_bobot / $total_sks, 2);
+                $ipk = number_format($total_bobot / $this->total_sks(), 2);
             }
 
             return $ipk;
+        }
+    }
+    public function total_sks()
+    {
+        if ($this->role == 'mahasiswa') {
+            $kartu_studi = KartuStudi::where('username', $this->username)->with('mata_kuliah')->latest()->get();
+            $total_sks = 0;
+            foreach ($kartu_studi as $k) {
+                $total_sks = $total_sks + (float)$k->mata_kuliah->jumlah_sks;
+            }
+
+            return $total_sks;
         }
     }
 }
