@@ -13,7 +13,9 @@
         <h1 class="font-bold text-2xl">Kelas</h1>
     </div>
     <div class="" x-data='{ isOpen:false }'>
-        <div class="flex justify-end">
+        <div class="flex justify-between flex-wrap gap-3">
+            <input type="text" placeholder="Cari kelas" :class="isOpen == false ? '' : 'opacity-0'"
+                wire:model.live.debounce.150ms="search_kelas" class="input input-bordered w-full max-w-xs" />
             <button class="btn bg-blue-500 text-white hover:bg-blue-700" x-on:click="isOpen=!isOpen">
                 <svg x-show='!isOpen' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

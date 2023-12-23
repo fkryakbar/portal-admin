@@ -7,6 +7,8 @@ use App\Models\MataKuliah;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 class Index extends Component
 {
@@ -22,6 +24,8 @@ class Index extends Component
     #[Validate('required|max:30')]
     public $jadwal;
 
+
+    public $search_kelas = '';
     public function create()
     {
         $this->validate();
@@ -52,9 +56,17 @@ class Index extends Component
     #[Layout('layouts.main')]
     public function render()
     {
+        $search_kelas = $this->search_kelas;
+        $kelas = Kelas::latest()->with('tahun_ajaran')->get()->groupBy('tahun_ajaran.nama_tahun_ajaran');
+        if (Str::length($this->search_kelas) >= 3) {
+            $kelas = Kelas::where(function (Builder $query) use ($search_kelas) {
+                $query->where('nama', 'like', '%' . $search_kelas . '%')
+                    ->orWhere('kode_mata_kuliah', 'like', '%' . $search_kelas . '%');
+            })->latest()->with('tahun_ajaran')->get()->groupBy('tahun_ajaran.nama_tahun_ajaran');
+        }
         return view('kelas.index', [
             'mata_kuliah' => MataKuliah::orderBy('nama')->get(),
-            'kelas' => Kelas::latest()->with('tahun_ajaran')->get()->groupBy('tahun_ajaran.nama_tahun_ajaran')
+            'kelas' => $kelas
         ]);
     }
 }

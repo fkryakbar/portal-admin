@@ -166,6 +166,7 @@
                             <th></th>
                             <th>NIM</th>
                             <th>Nama</th>
+                            <th>Mata Kuliah</th>
                             <th>Tugas</th>
                             <th>MT</th>
                             <th>FT</th>
@@ -187,6 +188,7 @@
                                 @endphp
                                 <td>{{ $p->username }}</td>
                                 <td> {{ $p->name }}</td>
+                                <td> {{ $p->kartu_studi[0]->mata_kuliah->nama }}</td>
                                 <td> {{ $p->kartu_studi[0]->tugas }}</td>
                                 <td> {{ $p->kartu_studi[0]->uts }}</td>
                                 <td> {{ $p->kartu_studi[0]->uas }}</td>
