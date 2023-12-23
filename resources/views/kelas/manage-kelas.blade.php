@@ -56,6 +56,7 @@
                                     <td>{{ $d->username }}</td>
                                     <td> {{ $d->name }}</td>
                                     <td> <button wire:click='attach_dosen({{ $d->id }})'
+                                            wire:target="attach_dosen({{ $d->id }})" wire:loading.attr="disabled"
                                             class="btn btn-sm bg-blue-500 hover:bg-blue-700 text-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -99,6 +100,8 @@
                                     <td>{{ $p->username }}</td>
                                     <td> {{ $p->name }}</td>
                                     <td> <button wire:click='detach_dosen({{ $p->id }})'
+                                            wire:target="detach_dosen({{ $p->id }})"
+                                            wire:loading.attr="disabled"
                                             class="btn btn-sm bg-red-500 hover:bg-red-700 text-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -135,6 +138,8 @@
                                     <td>{{ $m->username }}</td>
                                     <td> {{ $m->name }}</td>
                                     <td> <button wire:click='attach_mahasiswa({{ $m->id }})'
+                                            wire:target="attach_mahasiswa({{ $m->id }})"
+                                            wire:loading.attr="disabled"
                                             class="btn btn-sm bg-blue-500 hover:bg-blue-700 text-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -189,6 +194,8 @@
                                 <td> {{ $p->kartu_studi[0]->bobot }}</td>
                                 <td> {{ $p->kartu_studi[0]->huruf }}</td>
                                 <td> <button wire:click='detach_mahasiswa({{ $p->id }})'
+                                        wire:target="detach_mahasiswa({{ $p->id }})"
+                                        wire:loading.attr="disabled"
                                         class="btn btn-sm bg-red-500 hover:bg-red-700 text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

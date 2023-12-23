@@ -74,7 +74,7 @@ class ManageKelas extends Component
         if (!$kelas->dosen->contains($id)) {
             $kelas->dosen()->attach([$id]);
         }
-        $this->dosen_query = '';
+        // $this->dosen_query = '';
     }
     public function detach_dosen($id)
     {
@@ -88,7 +88,7 @@ class ManageKelas extends Component
         if (!$kelas->mahasiswa->contains($id)) {
             $kelas->mahasiswa()->attach([$id]);
         }
-        $this->mahasiswa_query = '';
+        // $this->mahasiswa_query = '';
     }
     public function detach_mahasiswa($id)
     {
@@ -120,6 +120,8 @@ class ManageKelas extends Component
             $dosen = User::where('role', 'dosen')->where(function (Builder $query) use ($dosen_query) {
                 $query->where('name', 'like', '%' . $dosen_query . '%')
                     ->orWhere('username', 'like', '%' . $dosen_query . '%');
+            })->whereDoesntHave('kelas', function ($query) use ($kelas) {
+                $query->where('kelas_id', $kelas->id);
             })->get();
         } else {
             $dosen = collect([]);
@@ -131,6 +133,8 @@ class ManageKelas extends Component
                     ->orWhere('username', 'like', '%' . $mahasiswa_query . '%');
             })->whereHas('kartu_studi', function ($query) use ($kelas) {
                 $query->where('kode_mata_kuliah', $kelas->mata_kuliah->kode);
+            })->whereDoesntHave('kelas', function ($query) use ($kelas) {
+                $query->where('kelas_id', $kelas->id);
             })->get();
         } else {
             $mahasiswa = collect([]);
