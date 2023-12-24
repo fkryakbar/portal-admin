@@ -39,7 +39,16 @@ class ManageKelas extends Component
     public function update()
     {
         $this->validate();
-        $kelas = Kelas::where('kode_kelas', $this->kode_kelas)->firstOrFail();
+        $kelas = Kelas::where('kode_kelas', $this->kode_kelas)->with([
+            'tahun_ajaran',
+            'mahasiswa' => function ($query) {
+                $query->where('role', 'mahasiswa');
+            },
+            'dosen' => function ($query) {
+                $query->where('role', 'dosen');
+            }
+        ])->firstOrFail();
+
         $kelas->update([
             'nama' => $this->nama,
             'jadwal' => $this->jadwal,

@@ -59,6 +59,14 @@
                                 @endif
                             </div>
                             <h1 class="text-center text-lg font-semibold text-gray-700">{{ $k->nama }}</h1>
+                            <div class="flex gap-2 justify-center text-xs">
+                                <div class="p-1 bg-teal-500 rounded text-white font-semibold">
+                                    {{ count($k->dosen) }} Dosen
+                                </div>
+                                <div class="p-1 bg-amber-500 rounded text-white font-semibold">
+                                    {{ count($k->mahasiswa) }} Mahasiswa
+                                </div>
+                            </div>
                             <p class="text-center text-sm text-gray-700">{{ $k->kode_mata_kuliah }}</p>
                             <p class="text-center text-sm text-gray-700">{{ $k->jadwal }}</p>
                             <div class="flex justify-center items-center gap-2 mt-2">

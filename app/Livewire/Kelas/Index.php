@@ -57,12 +57,28 @@ class Index extends Component
     public function render()
     {
         $search_kelas = $this->search_kelas;
-        $kelas = Kelas::latest()->with('tahun_ajaran')->get()->groupBy('tahun_ajaran.nama_tahun_ajaran');
+        $kelas = Kelas::latest()->with([
+            'tahun_ajaran',
+            'mahasiswa' => function ($query) {
+                $query->where('role', 'mahasiswa');
+            },
+            'dosen' => function ($query) {
+                $query->where('role', 'dosen');
+            }
+        ])->get()->groupBy('tahun_ajaran.nama_tahun_ajaran');
         if (Str::length($this->search_kelas) >= 3) {
             $kelas = Kelas::where(function (Builder $query) use ($search_kelas) {
                 $query->where('nama', 'like', '%' . $search_kelas . '%')
                     ->orWhere('kode_mata_kuliah', 'like', '%' . $search_kelas . '%');
-            })->latest()->with('tahun_ajaran')->get()->groupBy('tahun_ajaran.nama_tahun_ajaran');
+            })->latest()->with([
+                'tahun_ajaran',
+                'mahasiswa' => function ($query) {
+                    $query->where('role', 'mahasiswa');
+                },
+                'dosen' => function ($query) {
+                    $query->where('role', 'dosen');
+                }
+            ])->get()->groupBy('tahun_ajaran.nama_tahun_ajaran');
         }
         return view('kelas.index', [
             'mata_kuliah' => MataKuliah::orderBy('nama')->get(),
