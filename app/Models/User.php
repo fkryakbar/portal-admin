@@ -49,6 +49,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Kelas::class, 'user_kelas');
     }
 
+    public function semester()
+    {
+        if ($this->role == 'mahasiswa') {
+            $kartu_studi = KartuStudi::where('username', $this->username)->with('mata_kuliah', 'tahun_akademik')->get()->groupBy('tahun_akademik.kode_tahun_ajaran');
+            return count($kartu_studi);
+        }
+        return null;
+    }
 
     public function ipk()
     {

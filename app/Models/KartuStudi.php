@@ -17,4 +17,8 @@ class KartuStudi extends Model
     {
         return $this->hasOne(MataKuliah::class, 'kode', 'kode_mata_kuliah');
     }
+    public function tahun_akademik(): HasOne
+    {
+        return $this->hasOne(TahunAjaran::class, 'kode_tahun_ajaran', 'tahun_ajaran');
+    }
 }

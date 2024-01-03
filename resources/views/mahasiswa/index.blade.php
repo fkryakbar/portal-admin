@@ -41,8 +41,8 @@
             <div class="form-control flex">
                 <form action="" method="GET">
                     <div class="join">
-                        <input type="text" placeholder="Cari" name="search" class="input input-bordered join-item"
-                            value="{{ request('search') }}" />
+                        <input type="text" placeholder="Cari" name="search"
+                            class="input input-bordered join-item w-full" value="{{ request('search') }}" />
                         <button class="btn btn-square join-item" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -66,6 +66,9 @@
                             NIM
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Semester
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             IPK
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -83,6 +86,9 @@
                             </th>
                             <td class="px-6 py-4">
                                 {{ $m->username }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $m->semester() }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $m->ipk() }}

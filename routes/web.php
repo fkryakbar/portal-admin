@@ -146,6 +146,13 @@ Route::get('/logout', function (Request $request) {
 });
 
 
+Route::get('/testing', function (Request $request) {
+    $mahasiswa = User::where('role', 'mahasiswa')->firstOrFail();
+
+    dd($mahasiswa->semester());
+});
+
+
 // development purpose
 // Route::get('/run-dev', function () {
 
