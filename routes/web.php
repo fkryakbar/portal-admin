@@ -146,11 +146,11 @@ Route::get('/logout', function (Request $request) {
 });
 
 
-Route::get('/testing', function (Request $request) {
-    $mahasiswa = User::where('role', 'mahasiswa')->firstOrFail();
+// Route::get('/testing', function (Request $request) {
+//     $mahasiswa = User::where('role', 'mahasiswa')->firstOrFail();
 
-    dd($mahasiswa->semester());
-});
+//     dd($mahasiswa->semester());
+// })->middleware('superAdmin');
 
 
 // development purpose
