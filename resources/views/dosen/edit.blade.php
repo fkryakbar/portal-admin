@@ -93,9 +93,8 @@
                                     class="w-[200px] rounded">
                             @endif
                             <p class="mt-3 text-xs">Foto (jpg/jpeg, (max. 100 KB) dengan ukuran 3:4)</p>
-                            <input
-                                class="block mt-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 "
-                                id="file_input" type="file" name="profile">
+                            <input class="file-input file-input-bordered w-full max-w-xs mt-2" id="file_input"
+                                type="file" name="profile">
 
                         </div>
                         <div class="mb-6">
@@ -178,6 +177,19 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="mt-3 rounded-lg border-[1px] border-gray-200 lg:p-4 p-2">
+                <h1 class="my-2 font-bold text-gray-600">Mata Kuliah yang diampu</h1>
+                <ul class="list-disc text-gray-600">
+                    @forelse ($dosen->kelas as $k)
+                        <li class="ml-5">
+                            <a href="/kelas/{{ $k->kode_kelas }}"
+                                class="hover:text-blue-500 hover:underline">{{ $k->nama }}</a>
+                        </li>
+                    @empty
+                        -
+                    @endforelse
+                </ul>
             </div>
             <button type="submit"
                 class="text-white mt-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ">Submit</button>

@@ -57,7 +57,7 @@ class DosenController extends Controller
 
     public function edit($username)
     {
-        $dosen = User::where('role', 'dosen')->where('username', $username)->firstOrFail();
+        $dosen = User::where('role', 'dosen')->where('username', $username)->with('kelas')->firstOrFail();
         return view('dosen.edit', [
             'dosen' => $dosen
         ]);
