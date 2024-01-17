@@ -32,20 +32,10 @@
                 </svg>
             </button>
         </div>
-        @if (session('success'))
-            <div role="alert" class="alert alert-success my-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{{ session('success') }}</span>
-            </div>
-        @endif
         <div x-show="!isOpen" class="mt-3">
             @foreach ($kelas as $tahun => $t)
                 <p class="mb-2 text-gray-500 font-semibold">{{ $tahun }}</p>
-                <div class="grid lg:grid-cols-4 gap-3 grid-cols-1 mb-5">
+                <div x-data="kelas" class="grid lg:grid-cols-4 gap-3 grid-cols-1 mb-5">
                     @foreach ($t as $k)
                         <div wire:key='{{ $k->id }}' class="border-[1px] border-gray-200 rounded p-3">
                             <div class="flex gap-1 justify-center">
@@ -78,7 +68,7 @@
                                             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                     </svg>
                                 </a>
-                                <button wire:confirm="Yakin mau hapus kelas?" wire:click="delete({{ $k->kode_kelas }})"
+                                <button x-on:click="hapus_kelas({{ $k->kode_kelas }})"
                                     class="btn btn-sm bg-red-500 hover:bg-red-700 text-white"><svg
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -153,4 +143,50 @@
             </form>
         </div>
     </div>
+
+
+    @script
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Alpine.data('kelas', () => {
+                return {
+                    hapus_kelas(id) {
+                        Swal.fire({
+                            title: 'Yakin mau menghapus kelas?',
+                            text: "Data tidak akan bisa dikembalikan",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, Hapus!'
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                await $wire.delete(id);
+                            }
+                        })
+                    },
+                }
+            })
+
+            Livewire.on('alert', function({
+                message,
+                icon
+            }) {
+                Toast.fire({
+                    icon: icon,
+                    title: message
+                });
+            })
+        </script>
+    @endscript
 </div>

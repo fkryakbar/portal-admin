@@ -37,8 +37,7 @@ class Index extends Component
             'kode_tahun_ajaran' => $this->kode_tahun_ajaran,
             'jadwal' => $this->jadwal,
         ]);
-
-        session()->flash('success', 'Kelas Berhasil dibuat');
+        $this->dispatch('alert', message: 'Kelas Berhasil dibuat',  icon: 'success');
         $this->reset('nama', 'kode_mata_kuliah', 'jadwal', 'kode_tahun_ajaran');
     }
     public function delete($kode_kelas)
@@ -49,8 +48,7 @@ class Index extends Component
         $kelas->mahasiswa()->detach();
 
         $kelas->delete();
-
-        session()->flash('success', 'Kelas Berhasil dihapus');
+        $this->dispatch('alert', message: 'Kelas Berhasil dihapus', icon: 'success');
     }
 
     #[Layout('layouts.main')]

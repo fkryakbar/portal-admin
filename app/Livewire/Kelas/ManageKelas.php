@@ -58,7 +58,7 @@ class ManageKelas extends Component
             'is_visible' => $this->is_visible,
         ]);
 
-        session()->flash('success', 'Kelas Berhasil diperbarui');
+        $this->dispatch('alert', message: 'Kelas berhasil diperbarui', icon: 'success');
     }
 
     public function mount($kode_kelas)
