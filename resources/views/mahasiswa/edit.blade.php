@@ -25,6 +25,33 @@
                 <li>Edit</li>
             </ul>
         </div>
+        <div class="flex justify-end">
+            <div class="flex gap-2">
+                <a class="btn bg-amber-500 text-white hover:bg-amber-700 rounded-full"
+                    href="/krs/{{ $mahasiswa->username }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path
+                            d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z" />
+                        <path
+                            d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z" />
+                    </svg>
+                    <p>
+                        Kartu Studi
+                    </p>
+                </a>
+                <a class="btn bg-blue-500 text-white hover:bg-blue-700 rounded-full"
+                    href="/hasil-studi/{{ $mahasiswa->username }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.54 15h6.42l.5 1.5H8.29l.5-1.5zm8.085-8.995a.75.75 0 10-.75-1.299 12.81 12.81 0 00-3.558 3.05L11.03 8.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l2.47-2.47 1.617 1.618a.75.75 0 001.146-.102 11.312 11.312 0 013.612-3.321z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                        Hasil Studi
+                    </p>
+                </a>
+            </div>
+        </div>
         <form action="" enctype="multipart/form-data" method="POST" class="mt-5">
             @csrf
             @if ($errors->any())
@@ -116,7 +143,8 @@
                         </div>
                         <div class="mb-6">
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                            <input type="email" id="email" name="email" value="{{ $mahasiswa->biodata->email }}"
+                            <input type="email" id="email" name="email"
+                                value="{{ $mahasiswa->biodata->email }}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                 placeholder="Email">
                         </div>
