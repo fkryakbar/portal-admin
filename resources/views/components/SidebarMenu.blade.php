@@ -2,7 +2,7 @@
     <div class="flex gap-2 items-center">
         <img src="{{ asset('assets/image/logo.png') }}" alt="logo" class="w-9">
         <div>
-            <h1 class="text-xl font-semibold text-green-500">PORTAL ADMIN</h1>
+            <h1 class="text-xl font-semibold text-green-500">AKADEMIK</h1>
             <p class="text-gray-600 font-semibold text-xs">SIAMAD</p>
         </div>
     </div>
