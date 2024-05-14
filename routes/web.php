@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HasilStudiController;
@@ -47,6 +48,17 @@ Route::middleware(['superAdmin'])->group(function () {
         Route::get('/{username}', [MahasiswaController::class, 'edit']);
         Route::post('/{username}', [MahasiswaController::class, 'update']);
         Route::get('/{username}/hapus', [MahasiswaController::class, 'delete']);
+    });
+
+    Route::group(['prefix' => 'alumni'], function () {
+        Route::get('/', [AlumniController::class, 'index']);
+        Route::post('/import', [AlumniController::class, 'import']);
+        Route::get('/export', [AlumniController::class, 'export']);
+        Route::get('/tambah', [AlumniController::class, 'tambah']);
+        Route::post('/tambah', [AlumniController::class, 'store']);
+        Route::get('/{u_id}', [AlumniController::class, 'edit']);
+        Route::post('/{u_id}', [AlumniController::class, 'update']);
+        Route::get('/{u_id}/hapus', [AlumniController::class, 'delete']);
     });
 
     Route::group(['prefix' => 'registrasi'], function () {
@@ -123,6 +135,9 @@ Route::middleware(['superAdmin'])->group(function () {
 });
 
 
+Route::group(['prefix' => 'api'], function () {
+    Route::get('/alumni/verif/{u_id}', [AlumniController::class, 'api_verif']);
+});
 
 
 
