@@ -14,4 +14,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: cd subdomain/siamad && cd ${{ secrets.FOLDER_NAME }} && git pull && composer install --optimize-autoloader --no-dev &&  php artisan migrate && php artisan route:clear && php artisan config:clear
+          script: cd subdomain/siamad && cd ${{ secrets.FOLDER_NAME }} && git pull && composer update --optimize-autoloader --no-dev &&  php artisan migrate && php artisan route:clear && php artisan config:clear
