@@ -105,50 +105,33 @@ class AlumniController extends Controller
 
     public function api_verif_uid($u_id,  Request $request)
     {
-        if ($request->hasHeader('access_key')) {
-            if ($request->header('access_key') == 'israel_should_be_destroyed') {
-                $alumni = Alumni::where('u_id', $u_id)->first();
+        $alumni = Alumni::where('u_id', $u_id)->first();
 
-                if ($alumni) {
-                    return response([
-                        'message' => 'Success',
-                        'data' => $alumni
-                    ]);
-                }
-                return response([
-                    'message' => 'Not found'
-                ], 404);
-            }
+        if ($alumni) {
+            return response([
+                'message' => 'Success',
+                'data' => $alumni
+            ]);
         }
-
         return response([
-            'message' => "You're not authorized"
-        ], 401);
+            'message' => 'Not found'
+        ], 404);
     }
     public function api_verif_pin($pin,  Request $request)
     {
-        if ($request->hasHeader('access_key')) {
-            if ($request->header('access_key') == 'israel_should_be_destroyed') {
-                $alumni = Alumni::where('no_ijazah', $pin)->first();
+        $alumni = Alumni::where('no_ijazah', $pin)->first();
 
-                if ($alumni) {
-                    return response([
-                        'message' => 'Success',
-                        'data' => [
-                            'no_ijazah' => $alumni->no_ijazah,
-                            'u_id' => $alumni->u_id,
-                        ]
-                    ]);
-                }
-                return response([
-                    'message' => 'Not found'
-                ], 404);
-            }
+        if ($alumni) {
+            return response([
+                'message' => 'Success',
+                'data' => [
+                    'no_ijazah' => $alumni->no_ijazah,
+                    'u_id' => $alumni->u_id,
+                ]
+            ]);
         }
-
         return response([
-            'message' => "You're not authorized",
-            'header' => $request->header('access_key')
-        ], 401);
+            'message' => 'Not found'
+        ], 404);
     }
 }
