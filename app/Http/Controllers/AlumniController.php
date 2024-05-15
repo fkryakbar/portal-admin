@@ -147,7 +147,8 @@ class AlumniController extends Controller
         }
 
         return response([
-            'message' => "You're not authorized"
+            'message' => "You're not authorized",
+            'header' => $request->header('access_key')
         ], 401);
     }
 }
