@@ -136,7 +136,8 @@ Route::middleware(['superAdmin'])->group(function () {
 
 
 Route::group(['prefix' => 'api'], function () {
-    Route::get('/alumni/verif/{u_id}', [AlumniController::class, 'api_verif']);
+    Route::get('/alumni/verif-pin/{pin}', [AlumniController::class, 'api_verif_pin']);
+    Route::get('/alumni/verif-uid/{u_id}', [AlumniController::class, 'api_verif_uid']);
 });
 
 

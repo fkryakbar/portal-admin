@@ -103,7 +103,7 @@ class AlumniController extends Controller
     }
 
 
-    public function api_verif($u_id,  Request $request)
+    public function api_verif_uid($u_id,  Request $request)
     {
         if ($request->hasHeader('access_key')) {
             if ($request->header('access_key') == 'israel_should_be_destroyed') {
@@ -113,6 +113,31 @@ class AlumniController extends Controller
                     return response([
                         'message' => 'Success',
                         'data' => $alumni
+                    ]);
+                }
+                return response([
+                    'message' => 'Not found'
+                ], 404);
+            }
+        }
+
+        return response([
+            'message' => "You're not authorized"
+        ], 401);
+    }
+    public function api_verif_pin($pin,  Request $request)
+    {
+        if ($request->hasHeader('access_key')) {
+            if ($request->header('access_key') == 'israel_should_be_destroyed') {
+                $alumni = Alumni::where('no_ijazah', $pin)->first();
+
+                if ($alumni) {
+                    return response([
+                        'message' => 'Success',
+                        'data' => [
+                            'no_ijazah' => $alumni->no_ijazah,
+                            'u_id' => $alumni->u_id,
+                        ]
                     ]);
                 }
                 return response([
