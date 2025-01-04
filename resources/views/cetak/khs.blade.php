@@ -105,6 +105,8 @@
         <br>
         ................., {{ $tanggal }}
         <br>
+        Ketua Program Studi PAI
+        <br>
         <br>
         <br>
         <br>
